@@ -1,23 +1,15 @@
-import logo from './logo.svg';
 import './App.css';
+import CssBassline from '@material-ui/core/CssBaseline';
+
+import Calculator from './components/calculator/calculator.component'
+import UnitConversion from './components/unit-conversion/unit-conversion.component';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CssBassline />
+        <UnitConversion />
+        {/* <Calculator /> */}
     </div>
   );
 }
