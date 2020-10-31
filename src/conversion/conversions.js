@@ -25,17 +25,17 @@ export const INGREDIENTS_ARRAY = [
 ];
 
 export const UNITS_ARRAY = [
-    {name: "Teaspoon", toCups: 0.0208333, type: "volume"},
-    {name: "Tablespoon", toCups: 0.0625, type: "volume"},
-    {name: "Gallon", toCups: 16, type: "volume"},
-    {name: "Quart", toCups: 4, type: "volume"},
-    {name: "Pint", toCups: 2, type: "volume"},
-    {name: "Cup", toCups: 1, type: "volume"},
-    {name: "Fluid Ounce", toCups: 0.125, type: "volume"},
-    {name: "Liter", toCups: 4.22675, type: "volume"},
-    {name: "Milliliter", toCups: 0.00422675, type: "volume"},
-    {name: "Grams", toGrams: 1, type: "weight"},
-    {name: "Pounds", toGrams: 453.592, type: "weight"}
+    {name: "Teaspoon", toBase: 0.0208333, type: "volume"},
+    {name: "Tablespoon", toBase: 0.0625, type: "volume"},
+    {name: "Gallon", toBase: 16, type: "volume"},
+    {name: "Quart", toBase: 4, type: "volume"},
+    {name: "Pint", toBase: 2, type: "volume"},
+    {name: "Cup", toBase: 1, type: "volume"},
+    {name: "Fluid Ounce", toBase: 0.125, type: "volume"},
+    {name: "Liter", toBase: 4.22675, type: "volume"},
+    {name: "Milliliter", toBase: 0.00422675, type: "volume"},
+    {name: "Grams", toBase: 1, type: "weight"},
+    {name: "Pounds", toBase: 453.592, type: "weight"}
 ];
 
 export const UNITS_LIST = {
