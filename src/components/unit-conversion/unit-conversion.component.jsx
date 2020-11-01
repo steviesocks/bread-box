@@ -89,24 +89,23 @@ const UnitConversion = () => {
     }
 
     useEffect(() => {
-        console.log("A")
-        console.log(amountFrom, amountTo, unitFrom, unitTo)
+        // console.log("A")
+        // console.log(amountFrom, amountTo, unitFrom, unitTo)
         const newAmount = convert(amountFrom, unitFrom, unitTo)
         setAmountTo(newAmount)
     }, [amountFrom]);
 
     useEffect(() => {
-        console.log("B")
-        console.log(amountFrom, amountTo, unitFrom, unitTo)
-
+        // console.log("B")
+        // console.log(amountFrom, amountTo, unitFrom, unitTo)
         const newAmount = convert(amountTo, unitTo, unitFrom)
         setAmountFrom(newAmount)
     }, [amountTo]);
 
     useEffect(() => {
-        console.log("C")
-        console.log(amountFrom, unitFrom, unitTo)
-        console.log(ingredient)
+        // console.log("C")
+        // console.log(amountFrom, unitFrom, unitTo)
+        // console.log(ingredient)
         if (isMixedType()) {
             if (ingredient === null) {
                 console.log("needs ingredient")
@@ -138,13 +137,14 @@ const UnitConversion = () => {
                 id="amount-from"
                 name="amount-from-input"
                 variant="outlined" 
-                value={roundToTwoDecimals(amountFrom)} 
+                value={roundToTwoDecimals(amountFrom).toString()} 
                 type="number"
                 inputProps={{
                                 step: "0.25",
                                 min: "0"
                             }} 
                 onChange={handleInputChange}
+                disabled={isMixedType() && ingredient === null ? true : false}
             />
             <FormControl variant="outlined" className="unit-select">
                 <Select
@@ -170,7 +170,7 @@ const UnitConversion = () => {
                         options={INGREDIENTS_ARRAY}
                         getOptionLabel={(option) => option.name}
                         style={{ width: 300 }}
-                        renderInput={(params) => <TextField {...params} label="Ingredient" variant="outlined" />}
+                        renderInput={(params) => <TextField {...params} label="Ingredient" variant="outlined" error={ingredient === null ? true : false}/>}
                         onChange={(event, value, reason) => {
                             const name = ref1.current.getAttribute("name");
                             handleAutoCompleteChange(event, value, reason, name)
@@ -182,13 +182,14 @@ const UnitConversion = () => {
                 id="amount-to"
                 name="amount-to-input"
                 variant="outlined" 
-                value={roundToTwoDecimals(amountTo)} 
+                value={roundToTwoDecimals(amountTo).toString()} 
                 type="number"
                 inputProps={{
                                 step: "0.25",
                                 min: "0"
                             }} 
                 onChange={handleInputChange}
+                disabled={isMixedType() && ingredient === null ? true : false}
             />
             <FormControl variant="outlined" className="unit-select">
                 <Select
