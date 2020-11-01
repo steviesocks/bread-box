@@ -16,24 +16,46 @@ import './unit-conversion.styles.scss';
 
 const UnitConversion = () => {
 
-    const [unitFrom, setUnitFrom] = useState({name: "Cup", toCups: 1, type: "volume"});
-    const [unitTo, setUnitTo] = useState({name: "Teaspoon", toCups: 0.0208333, type: "volume"});
+    const [unitFrom, setUnitFrom] = useState({name: "Cup", toBase: 1, type: "volume"});
+    const [unitTo, setUnitTo] = useState({name: "Teaspoon", toBase: 0.0208333, type: "volume"});
     const [ingredient, setIngredient] = useState(null);
     const [amountFrom, setAmountFrom] = useState(1);
-    const [amountTo, setAmountTo] = useState(amountFrom*unitFrom.toCups/unitTo.toCups);
-    const [convertDirection, setConvertDirection] = useState("TO")
-    const [isMixedType, setIsMixedType] = useState(false);
+    const [amountTo, setAmountTo] = useState(48.00007680012288);
 
     const getUnit = (value) => {
         return UNITS_ARRAY.filter(item => item.name === value)
+    }
+
+    const unitToBase = (amount, unit) => {
+        return amount*unit.toBase
+    }
+
+    const basicConvert = (amountFrom, unitFrom, unitTo) => {
+        return unitToBase(amountFrom, unitFrom)/unitToBase(1, unitTo)
     }
 
     const roundToTwoDecimals = (number) => (
         +(Math.round(number + "e+2")  + "e-2")
     )
 
+    const convert = (amountFrom, unitFrom, unitTo) => {
+        console.log("converter")
+        if (isMixedType()) {
+            if (unitFrom.type === "volume") {
+                return basicConvert(amountFrom, unitFrom, unitTo)*ingredient.cupsToGrams
+            } else {
+                return basicConvert(amountFrom, unitFrom, unitTo)/ingredient.cupsToGrams
+            }
+        } else {
+            return unitToBase(amountFrom, unitFrom)/unitToBase(1, unitTo)
+        }
+    }
+   
+   const isMixedType = () => {
+     return unitFrom.type !== unitTo.type
+   } 
+
     const handleAutoCompleteChange = (event, value, reason, name) => {
-        console.log("C")
         switch (name) {
             case "ingredient-select":
                 setIngredient(value)
@@ -41,28 +63,24 @@ const UnitConversion = () => {
             default:
                 break;
         }
+        console.log(reason)
     }
 
     const handleInputChange = (event) => {
-        console.log("B")
         const { value } = event.target;
         switch (event.target.name) {
             case "unit-from-select":
                 const newUnitFrom = getUnit(value)[0];
-                if (newUnitFrom.type !== unitFrom.type) {setIsMixedType(!isMixedType)}
                 setUnitFrom(newUnitFrom);
                 break;
             case "amount-from-input":
-                setConvertDirection("TO");
                 setAmountFrom(value);
                 break;
             case "unit-to-select":
                 const newUnitTo = getUnit(value)[0];
-                if (newUnitTo.type !== unitTo.type) {setIsMixedType(!isMixedType)}
                 setUnitTo(newUnitTo);
                 break;
             case "amount-to-input":
-                setConvertDirection("FROM");
                 setAmountTo(value);
                 break;
             default:
@@ -71,36 +89,44 @@ const UnitConversion = () => {
     }
 
     useEffect(() => {
-        console.log("A")
-        console.log(amountTo)
-        if (!isMixedType) {
-            if (convertDirection === "TO") {
-                const conversion = (amountFrom*unitFrom.toCups)/(unitTo.toCups)
-                setAmountTo(roundToTwoDecimals(conversion))
+        // console.log("A")
+        // console.log(amountFrom, amountTo, unitFrom, unitTo)
+        const newAmount = convert(amountFrom, unitFrom, unitTo)
+        setAmountTo(newAmount)
+    }, [amountFrom]);
+
+    useEffect(() => {
+        // console.log("B")
+        // console.log(amountFrom, amountTo, unitFrom, unitTo)
+        const newAmount = convert(amountTo, unitTo, unitFrom)
+        setAmountFrom(newAmount)
+    }, [amountTo]);
+
+    useEffect(() => {
+        // console.log("C")
+        // console.log(amountFrom, unitFrom, unitTo)
+        // console.log(ingredient)
+        if (isMixedType()) {
+            if (ingredient === null) {
+                console.log("needs ingredient")
             } else {
-                const conversion = (amountTo*unitTo.toCups)/(unitFrom.toCups)
-                setAmountFrom(roundToTwoDecimals(conversion))
+                const newAmount = convert(amountFrom, unitFrom, unitTo)
+                setAmountTo(newAmount)
             }
         } else {
-            if (ingredient && convertDirection === "TO") {
-                const conversion = (amountFrom*unitFrom.toCups/unitTo.toGrams*ingredient.cupsToGrams)
-                setAmountTo(roundToTwoDecimals(conversion))
-            } else if (ingredient && convertDirection === "FROM") {
-                const conversion = (amountTo/ingredient.cupsToGrams*unitFrom.toCups)
-                setAmountFrom(roundToTwoDecimals(conversion))
-            } else if (!ingredient) {
-                setAmountTo(null);
-            }
+            const newAmount = convert(amountFrom, unitFrom, unitTo)
+            setAmountTo(newAmount)
         }
-        
+    }, [unitFrom, unitTo]);
 
-        
-    }, [ingredient, unitFrom, unitTo, amountFrom, amountTo, convertDirection, isMixedType])
-   
-    useEffect(()=> {
-        console.log("amount to", amountTo)
-    }, [amountTo])
-
+    useEffect(() => {
+        if (ingredient !== null) {
+            const newAmount = convert(amountFrom, unitFrom, unitTo)
+            setAmountTo(newAmount)
+        } else {
+            console.log("no ingredient")
+        }
+    }, [ingredient])
 
     const ref1 = useRef();
 
@@ -111,13 +137,14 @@ const UnitConversion = () => {
                 id="amount-from"
                 name="amount-from-input"
                 variant="outlined" 
-                value={amountFrom} 
+                value={roundToTwoDecimals(amountFrom).toString()} 
                 type="number"
                 inputProps={{
                                 step: "0.25",
                                 min: "0"
                             }} 
                 onChange={handleInputChange}
+                disabled={isMixedType() && ingredient === null ? true : false}
             />
             <FormControl variant="outlined" className="unit-select">
                 <Select
@@ -134,15 +161,16 @@ const UnitConversion = () => {
                 </Select>
             </FormControl>
             {
-                unitFrom.type !== unitTo.type ? (
+                isMixedType() ? (
                     <Autocomplete
                         id="ingredient-box"
                         ref={ref1}
                         name="ingredient-select"
+                        value={ingredient}
                         options={INGREDIENTS_ARRAY}
                         getOptionLabel={(option) => option.name}
                         style={{ width: 300 }}
-                        renderInput={(params) => <TextField {...params} label="Ingredient" variant="outlined" />}
+                        renderInput={(params) => <TextField {...params} label="Ingredient" variant="outlined" error={ingredient === null ? true : false}/>}
                         onChange={(event, value, reason) => {
                             const name = ref1.current.getAttribute("name");
                             handleAutoCompleteChange(event, value, reason, name)
@@ -154,13 +182,14 @@ const UnitConversion = () => {
                 id="amount-to"
                 name="amount-to-input"
                 variant="outlined" 
-                value={amountTo} 
+                value={roundToTwoDecimals(amountTo).toString()} 
                 type="number"
                 inputProps={{
                                 step: "0.25",
                                 min: "0"
                             }} 
                 onChange={handleInputChange}
+                disabled={isMixedType() && ingredient === null ? true : false}
             />
             <FormControl variant="outlined" className="unit-select">
                 <Select
