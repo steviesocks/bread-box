@@ -11,7 +11,8 @@ const RecipeItem = ({name, amount}) => {
     return (
             <ListItem>
                 <ListItemText
-                primary={`${name}: ${amount}g`}
+                primary={name}
+                secondary={amount}
                 />
                 <ListItemSecondaryAction>
                 <IconButton edge="end" aria-label="delete">

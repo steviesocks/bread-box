@@ -1,4 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import { getUnit,
+    roundToTwoDecimals,
+    convert,
+    isMixedType } from '../../redux/calculator/calculator.utils';
+
+import { setAmountTo, setAmountFrom, setUnitTo, setUnitFrom, setIngredient } from '../../redux/calculator/calculator.actions';
+
+import { selectAmountFrom,
+    selectAmountTo,
+    selectIngredient,
+    selectUnitFrom,
+    selectUnitTo } from '../../redux/calculator/calculator.selectors';
 
 import { INGREDIENTS_ARRAY, UNITS_ARRAY } from '../../conversion/conversions';
 
@@ -7,53 +22,27 @@ import {
     TextField,
     FormControl,
     Select,
-    MenuItem
+    MenuItem,
+    Container,
+    Tooltip,
+    Fab,
+    List
 } from '@material-ui/core';
-
 import { Autocomplete } from '@material-ui/lab';
+import AddIcon from '@material-ui/icons/Add';
+import RecipeItem from '../recipe-item/recipe-item.component';
 
-import './unit-conversion.styles.scss';
+import useStyles from './unit-conversion.styles.js';
 
-const UnitConversion = () => {
+const UnitConversion = ({amountFrom, setAmountFrom, amountTo, setAmountTo, unitTo, setUnitTo, unitFrom, setUnitFrom, ingredient, setIngredient}) => {
+    const classes = useStyles();
+    const loaded = useRef(false);
 
-    const [unitFrom, setUnitFrom] = useState({name: "Cup", toBase: 1, type: "volume"});
-    const [unitTo, setUnitTo] = useState({name: "Teaspoon", toBase: 0.0208333, type: "volume"});
-    const [ingredient, setIngredient] = useState(null);
-    const [amountFrom, setAmountFrom] = useState(1);
-    const [amountTo, setAmountTo] = useState(48.00007680012288);
+    const [recipe, setRecipe] = useState([]);
 
-    const getUnit = (value) => {
-        return UNITS_ARRAY.filter(item => item.name === value)
+    const addIngredientToRecipe = (amountTo, ingredient) => {
+        setRecipe([...recipe, {name: ingredient.name, amount: amountTo}])
     }
-
-    const unitToBase = (amount, unit) => {
-        return amount*unit.toBase
-    }
-
-    const basicConvert = (amountFrom, unitFrom, unitTo) => {
-        return unitToBase(amountFrom, unitFrom)/unitToBase(1, unitTo)
-    }
-
-    const roundToTwoDecimals = (number) => (
-        +(Math.round(number + "e+2")  + "e-2")
-    )
-
-    const convert = (amountFrom, unitFrom, unitTo) => {
-        console.log("converter")
-        if (isMixedType()) {
-            if (unitFrom.type === "volume") {
-                return basicConvert(amountFrom, unitFrom, unitTo)*ingredient.cupsToGrams
-            } else {
-                return basicConvert(amountFrom, unitFrom, unitTo)/ingredient.cupsToGrams
-            }
-        } else {
-            return unitToBase(amountFrom, unitFrom)/unitToBase(1, unitTo)
-        }
-    }
-   
-   const isMixedType = () => {
-     return unitFrom.type !== unitTo.type
-   } 
 
     const handleAutoCompleteChange = (event, value, reason, name) => {
         switch (name) {
@@ -74,14 +63,14 @@ const UnitConversion = () => {
                 setUnitFrom(newUnitFrom);
                 break;
             case "amount-from-input":
-                setAmountFrom(value);
+                setAmountFrom(Number(value));
                 break;
             case "unit-to-select":
                 const newUnitTo = getUnit(value)[0];
                 setUnitTo(newUnitTo);
                 break;
             case "amount-to-input":
-                setAmountTo(value);
+                setAmountTo(Number(value));
                 break;
             default:
                 break;
@@ -89,124 +78,171 @@ const UnitConversion = () => {
     }
 
     useEffect(() => {
-        // console.log("A")
-        // console.log(amountFrom, amountTo, unitFrom, unitTo)
-        const newAmount = convert(amountFrom, unitFrom, unitTo)
-        setAmountTo(newAmount)
+        if (loaded.current) {
+            const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient)
+            setAmountTo(newAmount)
+        } else {
+            loaded.current = true;
+        }
     }, [amountFrom]);
 
     useEffect(() => {
-        // console.log("B")
-        // console.log(amountFrom, amountTo, unitFrom, unitTo)
-        const newAmount = convert(amountTo, unitTo, unitFrom)
-        setAmountFrom(newAmount)
+            // console.log(amountFrom, amountTo, unitFrom, unitTo)
+            const newAmount = convert(amountTo, unitTo, unitFrom, ingredient)
+            setAmountFrom(newAmount)
     }, [amountTo]);
 
     useEffect(() => {
-        // console.log("C")
-        // console.log(amountFrom, unitFrom, unitTo)
-        // console.log(ingredient)
-        if (isMixedType()) {
+
+        if (isMixedType(unitFrom, unitTo)) {
             if (ingredient === null) {
                 console.log("needs ingredient")
             } else {
-                const newAmount = convert(amountFrom, unitFrom, unitTo)
+                const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient)
                 setAmountTo(newAmount)
             }
         } else {
-            const newAmount = convert(amountFrom, unitFrom, unitTo)
+            const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient)
             setAmountTo(newAmount)
         }
     }, [unitFrom, unitTo]);
 
     useEffect(() => {
         if (ingredient !== null) {
-            const newAmount = convert(amountFrom, unitFrom, unitTo)
+            const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient)
             setAmountTo(newAmount)
         } else {
             console.log("no ingredient")
         }
     }, [ingredient])
 
+    useEffect(() => {
+        console.log("recipe", recipe)
+    }, [recipe])
+
     const ref1 = useRef();
 
     return (
-        <Paper className="paper">
-            <h3>Unit Conversion</h3>
-            <TextField 
-                id="amount-from"
-                name="amount-from-input"
-                variant="outlined" 
-                value={roundToTwoDecimals(amountFrom).toString()} 
-                type="number"
-                inputProps={{
-                                step: "0.25",
-                                min: "0"
-                            }} 
-                onChange={handleInputChange}
-                disabled={isMixedType() && ingredient === null ? true : false}
-            />
-            <FormControl variant="outlined" className="unit-select">
-                <Select
-                id="unit-from"
-                value={unitFrom.name}
-                onChange={handleInputChange}
-                name="unit-from-select"
-                >
-                {
-                    UNITS_ARRAY.map(unit => (<MenuItem value={unit.name}>{unit.name}</MenuItem>
-                    ))
-                }
-                
-                </Select>
-            </FormControl>
-            {
-                isMixedType() ? (
-                    <Autocomplete
-                        id="ingredient-box"
-                        ref={ref1}
-                        name="ingredient-select"
-                        value={ingredient}
-                        options={INGREDIENTS_ARRAY}
-                        getOptionLabel={(option) => option.name}
-                        style={{ width: 300 }}
-                        renderInput={(params) => <TextField {...params} label="Ingredient" variant="outlined" error={ingredient === null ? true : false}/>}
-                        onChange={(event, value, reason) => {
-                            const name = ref1.current.getAttribute("name");
-                            handleAutoCompleteChange(event, value, reason, name)
-                        }}
-                    />
-                ) : null
-            }
-            <TextField 
-                id="amount-to"
-                name="amount-to-input"
-                variant="outlined" 
-                value={roundToTwoDecimals(amountTo).toString()} 
-                type="number"
-                inputProps={{
-                                step: "0.25",
-                                min: "0"
-                            }} 
-                onChange={handleInputChange}
-                disabled={isMixedType() && ingredient === null ? true : false}
-            />
-            <FormControl variant="outlined" className="unit-select">
-                <Select
-                id="unit-to"
-                value={unitTo.name}
-                onChange={handleInputChange}
-                name="unit-to-select"
-                >
-                {
-                    UNITS_ARRAY.map(unit => (<MenuItem value={unit.name}>{unit.name}</MenuItem>
-                    ))
-                }
-                
-                </Select>
-            </FormControl>
-        </Paper>
+        <Container>
+            <Paper className={classes.paper}>
+                <h2>Unit Conversion</h2>
+                <Container className={classes.calculator}>
+                    <Container className={classes.inputs}>
+                        <TextField 
+                            className={classes.amount}
+                            name="amount-from-input"
+                            variant="outlined" 
+                            value={roundToTwoDecimals(amountFrom).toString()} 
+                            type="number"
+                            inputProps={{
+                                            className: classes.amountInput,
+                                            step: "0.25",
+                                            min: "0"
+                                        }} 
+                            onChange={handleInputChange}
+                            disabled={isMixedType(unitFrom, unitTo) && ingredient === null ? true : false}
+                        />
+                        <FormControl variant="outlined" className={classes.unit}>
+                            <Select
+                            id="unit-from"
+                            value={unitFrom.name}
+                            onChange={handleInputChange}
+                            name="unit-from-select"
+                            >
+                            {
+                                UNITS_ARRAY.map(unit => (<MenuItem value={unit.name}>{unit.name}</MenuItem>
+                                ))
+                            }
+                            
+                            </Select>
+                        </FormControl>
+                        </Container>
+                        <Container className={classes.equals}>=</Container>
+                        <Container className={classes.inputs}>
+                        <TextField 
+                            className={classes.amount}
+                            name="amount-to-input"
+                            variant="outlined" 
+                            value={roundToTwoDecimals(amountTo).toString()} 
+                            type="number"
+                            inputProps={{
+                                            className: classes.amountInput,
+                                            step: "0.25",
+                                            min: "0"
+                                        }} 
+                            onChange={handleInputChange}
+                            disabled={isMixedType(unitFrom, unitTo) && ingredient === null ? true : false}
+                        />
+                        <FormControl variant="outlined" className={classes.unit}>
+                            <Select
+                            id="unit-to"
+                            value={unitTo.name}
+                            onChange={handleInputChange}
+                            name="unit-to-select"
+                            >
+                            {
+                                UNITS_ARRAY.map(unit => (<MenuItem value={unit.name}>{unit.name}</MenuItem>
+                                ))
+                            }
+                            
+                            </Select>
+                        </FormControl> 
+                    </Container>
+                    
+                </Container>
+                <Container className={classes.ingredient}>
+                    {
+                        isMixedType(unitFrom, unitTo) ? (
+                            <Autocomplete
+                                ref={ref1}
+                                name="ingredient-select"
+                                value={ingredient}
+                                options={INGREDIENTS_ARRAY}
+                                getOptionLabel={(option) => option.name}
+                                // style={{ width: 300 }}
+                                renderInput={(params) => <TextField {...params} label="Ingredient" variant="outlined" error={ingredient === null ? true : false}/>}
+                                onChange={(event, value, reason) => {
+                                    const name = ref1.current.getAttribute("name");
+                                    handleAutoCompleteChange(event, value, reason, name)
+                                }}
+                            />
+                        ) : null
+                    }
+                </Container>
+                <Tooltip title="Add to recipe" aria-label="add to recipe">
+                    <Fab color="primary" className={classes.fab}>
+                        <AddIcon onClick={() => addIngredientToRecipe(amountTo, ingredient)}/>
+                    </Fab>
+                </Tooltip>
+            </Paper>
+            <Paper className={classes.paper}>
+                <List dense={true}>
+                    {
+                        recipe.map((item) => {
+                            return <RecipeItem key={item.name} name={item.name} amount={item.amount} />
+                        })
+                    }
+                </List>
+            </Paper>
+        </Container>
     )
 }
 
-export default UnitConversion;
+const mapStateToProps = createStructuredSelector({
+    amountTo: selectAmountTo,
+    amountFrom: selectAmountFrom,
+    ingredient: selectIngredient,
+    unitTo: selectUnitTo,
+    unitFrom: selectUnitFrom
+})
+
+const mapDispatchToProps = dispatch => ({
+    setAmountTo: (value) => dispatch(setAmountTo(value)),
+    setAmountFrom: (value) => dispatch(setAmountFrom(value)),
+    setUnitTo: (value) => dispatch(setUnitTo(value)),
+    setUnitFrom: (value) => dispatch(setUnitFrom(value)),
+    setIngredient: (value) => dispatch(setIngredient(value))
+  });
+  
+
+export default connect(mapStateToProps, mapDispatchToProps)(UnitConversion);
