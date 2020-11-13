@@ -37,6 +37,7 @@ import useStyles from './unit-conversion.styles.js';
 const UnitConversion = ({amountFrom, setAmountFrom, amountTo, setAmountTo, unitTo, setUnitTo, unitFrom, setUnitFrom, ingredient, setIngredient}) => {
     const classes = useStyles();
     const loaded = useRef(false);
+    const lastChange = useRef("AMOUNT_FROM");
 
     const [recipe, setRecipe] = useState([]);
 
@@ -47,12 +48,12 @@ const UnitConversion = ({amountFrom, setAmountFrom, amountTo, setAmountTo, unitT
     const handleAutoCompleteChange = (event, value, reason, name) => {
         switch (name) {
             case "ingredient-select":
-                setIngredient(value)
+                setIngredient(value);
+                lastChange.current = "INGREDIENT";
                 break;
             default:
                 break;
         }
-        console.log(reason)
     }
 
     const handleInputChange = (event) => {
@@ -61,16 +62,20 @@ const UnitConversion = ({amountFrom, setAmountFrom, amountTo, setAmountTo, unitT
             case "unit-from-select":
                 const newUnitFrom = getUnit(value)[0];
                 setUnitFrom(newUnitFrom);
+                lastChange.current = "UNIT_FROM";
                 break;
             case "amount-from-input":
                 setAmountFrom(Number(value));
+                lastChange.current = "AMOUNT_FROM";
                 break;
             case "unit-to-select":
                 const newUnitTo = getUnit(value)[0];
                 setUnitTo(newUnitTo);
+                lastChange.current = "UNIT_TO";
                 break;
             case "amount-to-input":
                 setAmountTo(Number(value));
+                lastChange.current = "AMOUNT_TO";
                 break;
             default:
                 break;
@@ -79,46 +84,58 @@ const UnitConversion = ({amountFrom, setAmountFrom, amountTo, setAmountTo, unitT
 
     useEffect(() => {
         if (loaded.current) {
-            const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient)
-            setAmountTo(newAmount)
+            switch (lastChange.current) {
+                case "AMOUNT_FROM": 
+                    {
+                        const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient);
+                        setAmountTo(newAmount);
+                        lastChange.current = "AMOUNT_TO";
+                    }
+                    break;
+                case "AMOUNT_TO":
+                    {
+                        const newAmount = convert(amountTo, unitTo, unitFrom, ingredient);
+                        setAmountFrom(newAmount);
+                        lastChange.current = "AMOUNT_FROM";
+                    }
+                    break;
+                case "UNIT_FROM" :
+                case "UNIT_TO":
+                    if (isMixedType(unitFrom, unitTo)) {
+                        if (ingredient === null) {
+                            console.log("needs ingredient");
+                        } else {
+                            const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient);
+                            setAmountTo(newAmount);
+                            lastChange.current = "AMOUNT_TO";
+                        }
+                    } else {
+                        const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient);
+                        setAmountTo(newAmount);
+                        lastChange.current = "AMOUNT_TO";
+                    }
+                    break;
+                case "INGREDIENT":
+                    if (ingredient !== null) {
+                        const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient);
+                        setAmountTo(newAmount);
+                        lastChange.current = "AMOUNT_TO";
+                    } else {
+                        console.log("no ingredient")
+                    }
+                    break;    
+                default:
+                    break;
+            }
+
         } else {
             loaded.current = true;
         }
-    }, [amountFrom]);
+    }, [amountFrom, amountTo, ingredient, setAmountFrom, setAmountTo, unitFrom, unitTo])
 
-    useEffect(() => {
-            // console.log(amountFrom, amountTo, unitFrom, unitTo)
-            const newAmount = convert(amountTo, unitTo, unitFrom, ingredient)
-            setAmountFrom(newAmount)
-    }, [amountTo]);
-
-    useEffect(() => {
-
-        if (isMixedType(unitFrom, unitTo)) {
-            if (ingredient === null) {
-                console.log("needs ingredient")
-            } else {
-                const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient)
-                setAmountTo(newAmount)
-            }
-        } else {
-            const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient)
-            setAmountTo(newAmount)
-        }
-    }, [unitFrom, unitTo]);
-
-    useEffect(() => {
-        if (ingredient !== null) {
-            const newAmount = convert(amountFrom, unitFrom, unitTo, ingredient)
-            setAmountTo(newAmount)
-        } else {
-            console.log("no ingredient")
-        }
-    }, [ingredient])
-
-    useEffect(() => {
-        console.log("recipe", recipe)
-    }, [recipe])
+    // useEffect(() => {
+    //     console.log("recipe", recipe)
+    // }, [recipe])
 
     const ref1 = useRef();
 
