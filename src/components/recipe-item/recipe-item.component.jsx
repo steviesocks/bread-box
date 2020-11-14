@@ -6,21 +6,18 @@ import { ListItem,
     } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const RecipeItem = ({name, amount}) => {
-
-    return (
-            <ListItem>
-                <ListItemText
-                primary={name}
-                secondary={amount}
-                />
-                <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon />
-                </IconButton>
-                </ListItemSecondaryAction>
-            </ListItem>        
-    )
-};
+const RecipeItem = ({keyString, name, amount, unit, deleteIngredient}) => (
+    <ListItem>
+        <ListItemText
+        primary={name}
+        secondary={`${amount} ${unit.toLowerCase()}`}
+        />
+        <ListItemSecondaryAction>
+        <IconButton edge="end" aria-label="delete" onClick={() => {deleteIngredient(keyString)}}>
+            <DeleteIcon />
+        </IconButton>
+        </ListItemSecondaryAction>
+    </ListItem>        
+);
 
 export default RecipeItem;

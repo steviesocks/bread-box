@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles({
     paper: {
       padding: '30px',
-      width: '550px',
-      margin: '25px auto'
+      width: '100%',
+      gridColumnStart: 2
     },
     calculator: {
         display: 'grid',
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
         width: '100%'
     },
     amountInput: {
-        height: '75px',
+        height: '50px',
         fontSize: '30px',
         textAlign: 'center'
     },
@@ -40,11 +40,17 @@ const useStyles = makeStyles({
     ingredient: {
         padding: 0,
         marginTop: '20px',
-
+        width: '100%',
     },
+    ingredientSelect: {
+        padding: 0
+    },
+    addButton: {
+        position: 'relative'
+      },
     fab: {
-        position: 'relative',
-        left: '275px'
+        position: 'absolute',
+        left: '100%'
     }
   });
 
