@@ -2,7 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectIngredients } from '../../redux/recipe/recipe.selectors';
-import { deleteIngredient } from '../../redux/recipe/recipe.actions'
+import { deleteIngredient, setIngredients } from '../../redux/recipe/recipe.actions'
+
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import {
     Paper,
@@ -12,29 +15,49 @@ import RecipeItem from '../recipe-item/recipe-item.component';
 
 import useStyles from './recipe.styles.js';
 
-const Recipe = ({ingredients, deleteIngredient}) => {
+const Recipe = ({ingredients, deleteIngredient, setIngredients}) => {
     const classes = useStyles();
+
+    const moveCardHandler = (dragIndex, hoverIndex) => {
+        console.log("ingredients", ingredients)
+        const dragItem = ingredients[dragIndex];
+        console.log("dragItem", dragItem)
+
+        if (dragItem) {
+            const copiedStateArray = [...ingredients];
+
+            const prevItem = copiedStateArray.splice(hoverIndex, 1, dragItem);
+            
+            copiedStateArray.splice(dragIndex, 1, prevItem[0]);
+            
+            setIngredients(copiedStateArray);
+            }
+    };
 
     return(
         <Paper className={classes.paper}>
             <h2>Recipe</h2>
             <h4>Ingredients</h4>
-            <List dense={true}>
-                {
-                    ingredients.length ? 
-                    ingredients.map((item) => {
-                        return <RecipeItem 
-                                    key={item.key}
-                                    keyString={item.key}
-                                    name={item.ingredient.name} 
-                                    amount={item.amount} 
-                                    unit={item.unit.name}
-                                    deleteIngredient={deleteIngredient} 
-                                />
-                    }) :
-                    "Let's get cookin'..."
-                }
-            </List>
+            <DndProvider backend={HTML5Backend}>
+                <List dense={true}>
+                    {
+                        ingredients.length ? 
+                        ingredients.map((item, index) => {
+                            return <RecipeItem 
+                                        key={item.key}
+                                        index={index}
+                                        keyString={item.key}
+                                        name={item.ingredient.name} 
+                                        amount={item.amount} 
+                                        unit={item.unit.name}
+                                        deleteIngredient={deleteIngredient}
+                                        moveCardHandler={moveCardHandler}
+                                    />
+                        }) :
+                        "Let's get cookin'..."
+                    }
+                </List>
+            </DndProvider>
         </Paper>
     )
 };
@@ -44,7 +67,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-    deleteIngredient: (key) => dispatch(deleteIngredient(key))
+    deleteIngredient: (key) => dispatch(deleteIngredient(key)),
+    setIngredients: (ingredients) => dispatch(setIngredients(ingredients))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Recipe);

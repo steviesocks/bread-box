@@ -5,15 +5,15 @@ import store from './redux/store';
 
 import UnitConversion from './components/unit-conversion/unit-conversion.component';
 import Recipe from './components/recipe/recipe.component';
-import BreadBoxIcon from './components/breadbox-icon/breadbox-icon.component';
 import Ingredient from './components/ingredient/ingredient.component';
+import Menu from './components/menu/menu.component';
 
 function App() {
   return (
     <Provider store={store}>
       <CssBassline />
       <div className="App">
-        <BreadBoxIcon />
+        <Menu />
         <Ingredient />
         <Recipe />
         <UnitConversion />

@@ -6,7 +6,7 @@ import { createKey } from '../../utils/utils'
 import { getUnit,
     roundToTwoDecimals,
     convert,
-    isMixedType } from '../../redux/calculator/calculator.utils';
+    isMixedType } from '../../utils/calculator.utils';
 
 import { setAmountTo, setAmountFrom, setUnitTo, setUnitFrom, setIngredient } from '../../redux/calculator/calculator.actions';
 import { addIngredient } from '../../redux/recipe/recipe.actions'
@@ -161,7 +161,7 @@ const UnitConversion = ({amountFrom, setAmountFrom, amountTo, setAmountTo, unitT
                         name="unit-from-select"
                         >
                         {
-                            UNITS_ARRAY.map(unit => (<MenuItem key={unit.name} value={unit.name}>{unit.name}</MenuItem>
+                            UNITS_ARRAY.map(unit => (<MenuItem key={createKey()} value={unit.name}>{unit.name}</MenuItem>
                             ))
                         }
                         
@@ -192,7 +192,7 @@ const UnitConversion = ({amountFrom, setAmountFrom, amountTo, setAmountTo, unitT
                         name="unit-to-select"
                         >
                         {
-                            UNITS_ARRAY.map(unit => (<MenuItem value={unit.name}>{unit.name}</MenuItem>
+                            UNITS_ARRAY.map(unit => (<MenuItem key={createKey()} value={unit.name}>{unit.name}</MenuItem>
                             ))
                         }
                         
