@@ -8,4 +8,9 @@ export const addIngredient = (ingredient) => ({
 export const deleteIngredient = (key) => ({
     type: RecipeActionTypes.DELETE_INGREDIENT,
     payload: key
-})
+});
+
+export const setIngredients = (ingredients) => ({
+    type: RecipeActionTypes.SET_INGREDIENTS,
+    payload: ingredients
+});

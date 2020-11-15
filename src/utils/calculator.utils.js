@@ -1,4 +1,4 @@
-import { UNITS_ARRAY } from '../../conversion/conversions';
+import { UNITS_ARRAY } from '../conversion/conversions';
 
 export const getUnit = (unitName) => {
     return UNITS_ARRAY.filter(item => item.name === unitName)

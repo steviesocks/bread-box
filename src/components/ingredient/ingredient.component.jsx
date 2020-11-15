@@ -17,7 +17,7 @@ import { Autocomplete } from '@material-ui/lab';
 import AddIcon from '@material-ui/icons/Add';
 
 import { UNITS_ARRAY, INGREDIENTS_ARRAY } from '../../conversion/conversions';
-import { getUnit } from '../../redux/calculator/calculator.utils'
+import { getUnit } from '../../utils/calculator.utils';
 
 import useStyles from './ingredient.styles';
 

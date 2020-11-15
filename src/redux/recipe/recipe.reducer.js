@@ -1,5 +1,5 @@
 import { RecipeActionTypes } from './recipe.types';
-import { deleteIngredient } from './recipe.utils';
+import { deleteIngredient } from '../../utils/recipe.utils';
 
 const INITIAL_STATE = {
     ingredients: []
@@ -17,6 +17,11 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 ingredients: deleteIngredient(action.payload, ingredients)
+            };
+        case RecipeActionTypes.SET_INGREDIENTS:
+            return {
+                ...state,
+                ingredients: action.payload
             }
         default:
             return state;
