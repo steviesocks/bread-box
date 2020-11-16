@@ -217,6 +217,7 @@ const UnitConversion = ({amountFrom, setAmountFrom, amountTo, setAmountTo, unitT
                                     const name = autocompleteRef.current.getAttribute("name");
                                     handleAutoCompleteChange(event, value, reason, name)
                                 }}
+                                blurOnSelect
                             /> 
                             <Container className={classes.addButton}>
                                 <Tooltip title="Add to recipe" aria-label="add to recipe">

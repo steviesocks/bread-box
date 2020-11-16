@@ -9,7 +9,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import {
     Paper,
-    List } from '@material-ui/core';
+    List, 
+    Button} from '@material-ui/core';
 
 import RecipeItem from '../recipe-item/recipe-item.component';
 
@@ -36,7 +37,8 @@ const Recipe = ({ingredients, deleteIngredient, setIngredients}) => {
 
     return(
         <Paper className={classes.paper}>
-            <h2>Recipe</h2>
+            <h2>Recipe</h2>    
+            <Button variant="outlined" color="primary" className={classes.button} disabled={ingredients.length ? false : true}>Save</Button>
             <h4>Ingredients</h4>
             <DndProvider backend={HTML5Backend}>
                 <List dense={true}>

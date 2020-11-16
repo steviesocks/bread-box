@@ -5,6 +5,7 @@ import { ListItem,
     IconButton
     } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
+import RecipeItemEdit from '../recipe-item-edit/recipe-item-edit.component';
 
 import { useDrag, useDrop } from 'react-dnd';
 
@@ -70,6 +71,7 @@ const RecipeItem = ({keyString, name, amount, unit, deleteIngredient, index, mov
             secondary={`${amount} ${unit.toLowerCase()}`}
             />
             <ListItemSecondaryAction>
+            <RecipeItemEdit index={index}/>
             <IconButton edge="end" aria-label="delete" onClick={() => {deleteIngredient(keyString)}}>
                 <DeleteIcon />
             </IconButton>
