@@ -15,10 +15,10 @@ const useStyles = makeStyles({
     },
     logo: {
         height: '50px',
-        transition: 'all .75s'
+        transition: 'all .5s'
     },
     rotate: {
-      transform: 'rotate(180deg)'      
+      transform: 'rotate(45deg)'      
     }
   });
 

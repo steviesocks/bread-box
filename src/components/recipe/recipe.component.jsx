@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectIngredients } from '../../redux/recipe/recipe.selectors';
@@ -13,11 +13,18 @@ import {
     Button} from '@material-ui/core';
 
 import RecipeItem from '../recipe-item/recipe-item.component';
+import SaveRecipe from '../save-recipe/save-recipe.component';
 
 import useStyles from './recipe.styles.js';
 
 const Recipe = ({ingredients, deleteIngredient, setIngredients}) => {
     const classes = useStyles();
+    
+    const [openSaveRecipe, setOpenSaveRecipe] = useState(false);
+
+    const handleSave = () => {
+        setOpenSaveRecipe(true)
+    }
 
     const moveCardHandler = (dragIndex, hoverIndex) => {
         console.log("ingredients", ingredients)
@@ -38,7 +45,16 @@ const Recipe = ({ingredients, deleteIngredient, setIngredients}) => {
     return(
         <Paper className={classes.paper}>
             <h2>Recipe</h2>    
-            <Button variant="outlined" color="primary" className={classes.button} disabled={ingredients.length ? false : true}>Save</Button>
+            <Button 
+                variant="outlined" 
+                color="primary" 
+                className={classes.button} 
+                disabled={ingredients.length ? false : true}
+                onClick={handleSave}
+            >
+                Save
+            </Button>
+            <SaveRecipe open={openSaveRecipe} setOpen={setOpenSaveRecipe} />
             <h4>Ingredients</h4>
             <DndProvider backend={HTML5Backend}>
                 <List dense={true}>

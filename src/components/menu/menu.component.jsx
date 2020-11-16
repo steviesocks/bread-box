@@ -1,24 +1,17 @@
-import React, { useState } from 'react';
-import { Container } from '@material-ui/core';
-import BreadBoxIcon from '../breadbox-icon/breadbox-icon.component';
-import Dropdown from '../dropdown/dropdown.component';
-import useStyles from './menu.styles';
+import React from 'react';
+import { Container, MenuItem } from '@material-ui/core';
 
-const Menu = () => {
+import useStyles from './menu.styles.js';
 
+const Menu = ({ menuOpen }) => {
     const classes = useStyles();
 
-    const [menuOpen, setMenuOpen] = useState(false);
-
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen)
-    }
-
     return (
-        <Container className={classes.menu}>
-            <BreadBoxIcon toggleMenu={toggleMenu} menuOpen={menuOpen}/>
-            <Dropdown menuOpen={menuOpen}/>
-        </Container>
+    <Container className={`${classes.dropdown} ${menuOpen ? null : classes.hidden}`}>
+        <MenuItem className={classes.menuItem} disableGutters>Create</MenuItem>
+        <MenuItem className={classes.menuItem} disableGutters>Browse</MenuItem>
+        <MenuItem className={classes.menuItem} disableGutters>Learn</MenuItem>
+    </Container>
     )
 };
 

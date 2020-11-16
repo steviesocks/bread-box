@@ -25,7 +25,7 @@ export const RecipeItemEdit = ({ ingredients, setIngredients, index }) => {
     const [open, setOpen] = useState(false);
     const [amount, setAmount] = useState(ingredients[index].amount)
     const [unit, setUnit] = useState(ingredients[index].unit)
-    const [ingredient, setIngredient] = useState(ingredients[index])
+    const ingredient = ingredients[index]
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -102,7 +102,7 @@ export const RecipeItemEdit = ({ ingredients, setIngredients, index }) => {
                     </FormControl>
                     </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel} color="primary">
+                    <Button onClick={handleCancel} color="default">
                         Cancel
                     </Button>
                     <Button onClick={handleConfirm} color="primary">

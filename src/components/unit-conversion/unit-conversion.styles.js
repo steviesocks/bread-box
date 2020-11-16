@@ -50,7 +50,8 @@ const useStyles = makeStyles({
       },
     fab: {
         position: 'absolute',
-        left: '100%'
+        left: '100%',
+        zIndex: 1
     }
   });
 
