@@ -3,8 +3,7 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles({
     paper: {
       padding: '30px',
-      width: '100%',
-      gridColumnStart: 2
+      width: '100%'
     },
     calculator: {
         display: 'grid',

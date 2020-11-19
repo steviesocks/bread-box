@@ -1,18 +1,20 @@
 import './App.css';
 
-import UnitConversion from './components/unit-conversion/unit-conversion.component';
-import Recipe from './components/recipe/recipe.component';
-import Ingredient from './components/ingredient/ingredient.component';
+import CreatePage from './pages/create/create.page';
+import CookbookPage from './pages/cookbook/cookbook.page';
 import SideBar from './components/side-bar/side-bar.component';
+import { Route, Switch } from 'react-router-dom';
+
 
 function App() {
   return (
     <div>
       <div className="App">
         <SideBar />
-        <Ingredient />
-        <Recipe />
-        <UnitConversion />
+        <Switch>
+          <Route exact path='/' component={CreatePage} />
+          <Route exact path='/cookbook' component={CookbookPage} />
+        </Switch>
       </div>
       <div className='footer'>
         Icon made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>

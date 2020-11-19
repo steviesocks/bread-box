@@ -17,7 +17,7 @@ const SideBar = () => {
     return (
         <Container className={classes.menu}>
             <BreadBoxIcon toggleMenu={toggleMenu} menuOpen={menuOpen}/>
-            <Menu menuOpen={menuOpen}/>
+            <Menu menuOpen={menuOpen} />
         </Container>
     )
 };

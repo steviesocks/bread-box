@@ -1,7 +1,9 @@
+const date = new Date("Mon Nov 16 2020 11:12:59 GMT-0500 (Eastern Standard Time)").toString()
+
 export const INITIAL_STATE = [{
     key: "9d489bb6-b282-4b2e-8df7-0fd5c3454425",
     name: "My First Sourdough",
-    dateCreated: new Date("Mon Nov 16 2020 11:12:59 GMT-0500 (Eastern Standard Time)"),
+    dateCreated: date,
     ingredients: [{
         key: "d1a34c29-26d0-4971-b1be-17b4c36c4918",
         amount: 1,
@@ -102,5 +104,6 @@ export const INITIAL_STATE = [{
     }
     ],
     notes: "How to Make Sourdough Bread | Kitchn",
-    link: "https://www.thekitchn.com/how-to-make-sourdough-bread-224367"
+    link: "https://www.thekitchn.com/how-to-make-sourdough-bread-224367",
+    imageUrl: "https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fit,w_1392,h_1740/k%2FPhoto%2FRecipes%2F2020-01-How-to-Sourdough-Bread%2F98652-beautiful-finished-bread-LEAD_How-to-make-sourdough-bread"
 }];

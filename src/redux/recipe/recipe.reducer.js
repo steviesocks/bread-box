@@ -22,7 +22,12 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 ingredients: action.payload
-            }
+            };
+        case RecipeActionTypes.CLEAR_INGREDIENTS:
+            return {
+                ...state,
+                ingredients: []
+            };
         default:
             return state;
     }

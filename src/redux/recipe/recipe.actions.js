@@ -14,3 +14,7 @@ export const setIngredients = (ingredients) => ({
     type: RecipeActionTypes.SET_INGREDIENTS,
     payload: ingredients
 });
+
+export const clearIngredients = () => ({
+    type: RecipeActionTypes.CLEAR_INGREDIENTS
+})

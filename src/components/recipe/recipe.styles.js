@@ -8,10 +8,13 @@ const useStyles = makeStyles({
       gridRowEnd: 'span 2',
       overflow: 'scroll'
     },
-    button: {
+    saveButton: {
       position: 'absolute',
       top: '45px',
       right: '30px'
+    },
+    clearButton: {
+      textAlign: 'right'
     }
   });
 

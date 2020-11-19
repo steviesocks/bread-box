@@ -5,12 +5,13 @@ export const deleteIngredient = (key, ingredients) => {
 }
 
 export class Recipe {
-    constructor(name, link, notes, ingredients) {
+    constructor(name, link, imageUrl, notes, ingredients) {
         this.key = createKey();
         this.name = name;
         this.ingredients = ingredients;
-        this.dateCreated = new Date();
+        this.dateCreated = new Date().toString();
         this.notes = notes;
         this.link = link;
+        this.imageUrl = imageUrl !== undefined ? imageUrl : '../assets/bread64.png';
     }
 }

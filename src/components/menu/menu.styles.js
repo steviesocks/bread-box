@@ -21,9 +21,11 @@ const useStyles = makeStyles({
         '&:hover': {
             opacity: 1,
             backgroundColor: 'rgba(255,255,255,.05)'
-        }
-
+        },
     },
+    selected: {
+        background: 'linear-gradient(135deg, rgba(226,226,226,0.00001) 0%, rgba(121,121,121,.3) 100%)'
+    }
   });
 
   export default useStyles;

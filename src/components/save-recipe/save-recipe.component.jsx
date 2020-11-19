@@ -15,7 +15,7 @@ import { Recipe } from '../../utils/recipe.utils';
 
 const SaveRecipe = ({ open, setOpen, ingredients, addRecipe }) => {
 
-    const [recipeInfo, setRecipeInfo] = useState({name: "", link: "", notes: ""})
+    const [recipeInfo, setRecipeInfo] = useState({name: "", link: "", notes: "", imageUrl: ""})
 
     const handleChange = (event) => {
         const { value, name } = event.target;
@@ -28,8 +28,8 @@ const SaveRecipe = ({ open, setOpen, ingredients, addRecipe }) => {
 
     const handleSave = (event) => {
         event.preventDefault();
-        const { name, link, notes } = recipeInfo;
-        const newRecipe = new Recipe(name, link, notes, ingredients)
+        const { name, link, notes, imageUrl } = recipeInfo;
+        const newRecipe = new Recipe(name, link, imageUrl, notes, ingredients)
         addRecipe(newRecipe)
         setOpen(false);
     }
@@ -61,6 +61,15 @@ const SaveRecipe = ({ open, setOpen, ingredients, addRecipe }) => {
                         label="Link"
                         type="url"
                         value={recipeInfo.link}
+                        fullWidth
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        margin="dense"
+                        name="imageUrl"
+                        label="Image link"
+                        type="url"
+                        value={recipeInfo.imageUrl}
                         fullWidth
                         onChange={handleChange}
                     />
