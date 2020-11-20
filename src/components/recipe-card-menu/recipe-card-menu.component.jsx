@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux';
 import { deleteRecipe } from '../../redux/cookbook/cookbook.actions';
+import { enqueueSnackbar, closeSnackbar } from '../../redux/notifications/notifications.actions';
+import { createKey } from '../../utils/utils';
 
 import {
     Menu,
     MenuItem,
+    Button
 } from '@material-ui/core'
 import ConfirmDelete from '../confirm-delete/confirm-delete.component';
 
@@ -67,7 +70,20 @@ const RecipeCardMenu = ({ anchorEl, setAnchorEl, open, handleCloseMenu, name, in
 };
 
 const mapDispatchToProps = dispatch => ({
-    deleteRecipe: (index) => dispatch(deleteRecipe(index))
+    deleteRecipe: (index) => {
+        dispatch(deleteRecipe(index))
+        dispatch(enqueueSnackbar({
+            message: 'Recipe removed from Cookbook',
+            options: {
+              key: createKey(),
+              variant: 'error',
+              hideIconVariant: true,
+              action: key => (
+                <Button onClick={() => dispatch(closeSnackbar(key))}>dismiss me</Button>
+              ),
+            },
+          }))
+    }
 })
 
 export default connect(null, mapDispatchToProps)(RecipeCardMenu);

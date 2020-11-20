@@ -1,14 +1,15 @@
 import './App.css';
+import Notifier from './Notifier';
 
 import CreatePage from './pages/create/create.page';
 import CookbookPage from './pages/cookbook/cookbook.page';
 import SideBar from './components/side-bar/side-bar.component';
 import { Route, Switch } from 'react-router-dom';
 
-
 function App() {
   return (
     <div>
+      <Notifier />
       <div className="App">
         <SideBar />
         <Switch>

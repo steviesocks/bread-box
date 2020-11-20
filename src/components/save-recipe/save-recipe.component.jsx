@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectIngredients } from '../../redux/recipe/recipe.selectors';
 import { addRecipe } from '../../redux/cookbook/cookbook.actions';
+import { enqueueSnackbar, closeSnackbar } from '../../redux/notifications/notifications.actions';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -12,6 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { Recipe } from '../../utils/recipe.utils';
+import { createKey } from '../../utils/utils';
 
 const SaveRecipe = ({ open, setOpen, ingredients, addRecipe }) => {
 
@@ -104,7 +106,19 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-    addRecipe: (recipe) => dispatch(addRecipe(recipe))
+    addRecipe: (recipe) => {
+        dispatch(addRecipe(recipe))
+        dispatch(enqueueSnackbar({
+            message: 'Recipe added to Cookbook',
+            options: {
+              key: createKey(),
+              variant: 'success',
+              action: key => (
+                <Button onClick={() => dispatch(closeSnackbar(key))}>dismiss me</Button>
+              ),
+            },
+          }))
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SaveRecipe);
