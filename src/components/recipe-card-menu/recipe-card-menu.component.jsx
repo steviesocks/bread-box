@@ -79,7 +79,7 @@ const mapDispatchToProps = dispatch => ({
               variant: 'error',
               hideIconVariant: true,
               action: key => (
-                <Button onClick={() => dispatch(closeSnackbar(key))}>dismiss me</Button>
+                <Button onClick={() => dispatch(closeSnackbar(key))}>dismiss</Button>
               ),
             },
           }))

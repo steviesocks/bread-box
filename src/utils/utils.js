@@ -17,3 +17,7 @@ export const fullDate = (dateObject) => {
 export const formatDate = (dateString) => {
     return `${dateString.slice(4,10)},${dateString.slice(10,15)}`
 }
+
+export const stripClassFromRecipes = (objectArray) => {
+    return objectArray.map(item => Object.assign({}, item))
+}

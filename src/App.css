@@ -4,16 +4,17 @@
   padding: 20px;
   display: grid;
   grid-template-columns: 1fr 30fr;
-  grid-template-rows: 60vh 60vh;
   grid-gap: 20px;
 }
 
 .footer {
-  position: clear;
   padding: 25px;
   background-color: #282c34;
-  color: white;
   text-align: center;
+}
+.footer > span {
+  color: white;
+  opacity: .5;
 }
 
 a {

@@ -1,12 +1,21 @@
-import './App.css';
+import React, {useEffect} from 'react';
 import Notifier from './Notifier';
+import { Route, Switch } from 'react-router-dom';
 
 import CreatePage from './pages/create/create.page';
 import CookbookPage from './pages/cookbook/cookbook.page';
 import SideBar from './components/side-bar/side-bar.component';
-import { Route, Switch } from 'react-router-dom';
 
-function App() {
+import './App.css';
+import { checkUserSession } from './redux/user/user.actions';
+import { connect } from 'react-redux';
+
+const App = ({ checkUserSession }) => {
+
+  useEffect(() => {
+    checkUserSession()
+  }, [checkUserSession])
+
   return (
     <div>
       <Notifier />
@@ -18,10 +27,14 @@ function App() {
         </Switch>
       </div>
       <div className='footer'>
-        Icon made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+        <span>Icon made by <a href="http://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a></span>
       </div>
     </div>
   );
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  checkUserSession: () => dispatch(checkUserSession())
+})
+
+export default connect(null, mapDispatchToProps)(App);
