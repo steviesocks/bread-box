@@ -3,7 +3,7 @@ import { takeLatest, put, all, call, select } from 'redux-saga/effects';
 import UserActionTypes from '../user/user.types';
 import { setRecipesFromFirebase, resetCookbook } from './cookbook.actions';
 
-import { firestore, getCookbookRef } from '../../firebase/firebase.utils';
+import { getCookbookRef } from '../../firebase/firebase.utils';
 import CookbookActionTypes from './cookbook.types';
 import { selectCurrentUser } from '../user/user.selectors';
 import { selectCookbookRecipes } from './cookbook.selectors';
@@ -34,8 +34,9 @@ export function* onRecipesUpdate() {
 
 export function* getRecipesFromFirebase({payload: { id }}) {
     try {
-        const cookbookRef = yield firestore.doc(`cookbooks/${id}`).get()
-        yield put(setRecipesFromFirebase(cookbookRef.data().recipes))
+        const cookbookRef = yield getCookbookRef(id)
+        const cookbookSnapshot = yield cookbookRef.get();
+        yield put(setRecipesFromFirebase(cookbookSnapshot.data().recipes))
     } catch(error) {
         yield console.log("error getting cookbook")
     }

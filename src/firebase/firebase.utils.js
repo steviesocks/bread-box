@@ -2,7 +2,6 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 import { stripClassFromRecipes } from '../utils/utils';
-import { selectCookbookRecipes } from '../redux/cookbook/cookbook.selectors';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -43,27 +42,28 @@ export const getUserRef = async (userAuth, additionalData) => {
     return userRef;
 }
 
-export const getCookbookRef = async (userAuth, recipesArray) => {
-    if (!userAuth) return;
+export const getCookbookRef = async (userId, recipesArray) => {
+    if (!userId) return;
 
-    const cookbookRef = firestore.doc(`cookbooks/${userAuth.uid}`);
+    const cookbookRef = firestore.collection("cookbooks").where("userId","==", userId);
 
     const snapShot = await cookbookRef.get()
 
-    if (!snapShot.exists) {
+    if (snapShot.empty) {
         const recipes = stripClassFromRecipes(recipesArray)
-        console.log("firebase utils recipes", recipes)
-
+        const cookbookDocRef = firestore.collection("cookbooks").doc()
         try {
-            await cookbookRef.set({
+            await cookbookDocRef.set({
+                userId,
                 recipes
             })
+            return cookbookDocRef
         } catch(error) {
             console.log("error creating cookbook", error)
         }
+    } else {
+        return snapShot.docs[0].ref;
     }
-
-    return cookbookRef;
 }
 
 export const getCurrentUser = () => {

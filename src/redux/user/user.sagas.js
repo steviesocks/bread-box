@@ -89,8 +89,7 @@ export function* signUp({payload: { email, password, displayName }}) {
 export function* signInAfterSignUp({ payload: { user, additionalData } }) {
     try {
         const recipesArray = yield select(selectCookbookRecipes)
-        console.log("recipesArray from sagas", recipesArray)
-        yield getCookbookRef(user, recipesArray)
+        yield getCookbookRef(user.uid, recipesArray)
     } catch (error) {
         yield put(signInFailure(error))
     }
