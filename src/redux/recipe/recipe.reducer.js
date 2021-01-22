@@ -1,4 +1,5 @@
 import { RecipeActionTypes } from './recipe.types';
+import { UserActionTypes } from '../user/user.types';
 import { deleteIngredient } from '../../utils/recipe.utils';
 
 const INITIAL_STATE = {
@@ -24,6 +25,7 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
                 ingredients: action.payload
             };
         case RecipeActionTypes.CLEAR_INGREDIENTS:
+        case UserActionTypes.SIGN_OUT_SUCCESS:
             return {
                 ...state,
                 ingredients: []

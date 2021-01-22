@@ -20,8 +20,6 @@ import { Dialog,
 
 import useStyles from './recipe-preview.styles';
 
-import imageUrl from '../../assets/how-to-make-sourdough-bread.jpg';
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -30,7 +28,7 @@ const RecipePreview = ({ handleClose, open, recipes, index }) => {
 
   const classes = useStyles();
 
-  const { name, notes, ingredients } = recipes[index];
+  const { name, notes, ingredients, imageUrl } = recipes[index];
 
   return (
     <Dialog

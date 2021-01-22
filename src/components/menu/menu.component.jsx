@@ -1,30 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { signOutStart } from '../../redux/user/user.actions';
+import { openSignIn } from '../../redux/sign-in/sign-in.actions';
 
 import { Container, MenuItem, Divider, Typography } from '@material-ui/core';
 
 import useStyles from './menu.styles.js';
 import SignIn from '../sign-in/sign-in.component';
-import { signOutStart } from '../../redux/user/user.actions';
 
-const Menu = ({ menuOpen, history, currentUser, signOutStart }) => {
+
+const Menu = ({ menuOpen, history, currentUser, signOutStart, signInOpen, openSignIn, closeSignIn }) => {
     const classes = useStyles();
 
-    const [signInOpen, setSignInOpen] = useState(false);
-
     const signInHandleClick = () => {
-        setSignInOpen(true)
+        openSignIn()
     }
 
     const signOutHandleClick = () => {
         signOutStart()
-    }
-
-    const signInHandleClose = () => {
-        setSignInOpen(false)
     }
 
     const { pathname } = history.location;
@@ -51,17 +47,18 @@ const Menu = ({ menuOpen, history, currentUser, signOutStart }) => {
                     </div>
 
             }
-            <SignIn open={signInOpen} handleClose={signInHandleClose} />
+            <SignIn />
         </Container>
     )
 };
 
 const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
+    currentUser: selectCurrentUser,
 })
 
 const mapDispatchToProps = dispatch => ({
-    signOutStart: (user) => dispatch(signOutStart(user))
+    signOutStart: (user) => dispatch(signOutStart(user)),
+    openSignIn: () => dispatch(openSignIn()),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Menu));
