@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/bread-box/static/css/main.fe2f0fcd.chunk.css",
-    "main.js": "/bread-box/static/js/main.8a1b2475.chunk.js",
-    "main.js.map": "/bread-box/static/js/main.8a1b2475.chunk.js.map",
+    "main.js": "/bread-box/static/js/main.6970c22e.chunk.js",
+    "main.js.map": "/bread-box/static/js/main.6970c22e.chunk.js.map",
     "runtime-main.js": "/bread-box/static/js/runtime-main.750005e6.js",
     "runtime-main.js.map": "/bread-box/static/js/runtime-main.750005e6.js.map",
-    "static/js/2.47a649d7.chunk.js": "/bread-box/static/js/2.47a649d7.chunk.js",
-    "static/js/2.47a649d7.chunk.js.map": "/bread-box/static/js/2.47a649d7.chunk.js.map",
+    "static/js/2.c7ae9eff.chunk.js": "/bread-box/static/js/2.c7ae9eff.chunk.js",
+    "static/js/2.c7ae9eff.chunk.js.map": "/bread-box/static/js/2.c7ae9eff.chunk.js.map",
     "static/js/3.163c7bb6.chunk.js": "/bread-box/static/js/3.163c7bb6.chunk.js",
     "static/js/3.163c7bb6.chunk.js.map": "/bread-box/static/js/3.163c7bb6.chunk.js.map",
     "index.html": "/bread-box/index.html",
     "static/css/main.fe2f0fcd.chunk.css.map": "/bread-box/static/css/main.fe2f0fcd.chunk.css.map",
-    "static/js/2.47a649d7.chunk.js.LICENSE.txt": "/bread-box/static/js/2.47a649d7.chunk.js.LICENSE.txt"
+    "static/js/2.c7ae9eff.chunk.js.LICENSE.txt": "/bread-box/static/js/2.c7ae9eff.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.750005e6.js",
-    "static/js/2.47a649d7.chunk.js",
+    "static/js/2.c7ae9eff.chunk.js",
     "static/css/main.fe2f0fcd.chunk.css",
-    "static/js/main.8a1b2475.chunk.js"
+    "static/js/main.6970c22e.chunk.js"
   ]
 }
