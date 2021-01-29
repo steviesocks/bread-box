@@ -7,7 +7,8 @@ import { createKey } from '../../utils/utils';
 import {
     Menu,
     MenuItem,
-    Button
+    Button,
+    Tooltip
 } from '@material-ui/core'
 import ConfirmDelete from '../confirm-delete/confirm-delete.component';
 
@@ -55,7 +56,9 @@ const RecipeCardMenu = ({ anchorEl, setAnchorEl, open, handleCloseMenu, name, in
                     },
                 }}
             >
-                <MenuItem key="edit" onClick={handleClickEdit}>Edit</MenuItem>
+                <Tooltip disableFocusListener title="Coming soon" arrow placement="right">
+                    <MenuItem key="edit" onClick={handleClickEdit}>Edit</MenuItem>
+                </Tooltip>
                 <MenuItem key="delete" onClick={handleClickDelete}>Delete</MenuItem>
             </Menu>
             <ConfirmDelete 

@@ -6,13 +6,17 @@ import { selectCurrentUser } from '../../redux/user/user.selectors';
 import { signOutStart } from '../../redux/user/user.actions';
 import { openSignIn } from '../../redux/sign-in/sign-in.actions';
 
-import { Container, MenuItem, Divider, Typography } from '@material-ui/core';
+import { Container, MenuItem, Divider, Typography, Tooltip } from '@material-ui/core';
+import IconMenuItem from './icon-menu-item/icon-menu-item.component';
+import createIcon from '../../assets/chef-hat.svg'
+import learnIcon from '../../assets/idea.svg'
+import cookbookIcon from '../../assets/cookbook.svg'
 
 import useStyles from './menu.styles.js';
 import SignIn from '../sign-in/sign-in.component';
 
 
-const Menu = ({ menuOpen, history, currentUser, signOutStart, signInOpen, openSignIn, closeSignIn }) => {
+const Menu = ({ toggleText, history, currentUser, signOutStart, openSignIn }) => {
     const classes = useStyles();
 
     const signInHandleClick = () => {
@@ -26,14 +30,16 @@ const Menu = ({ menuOpen, history, currentUser, signOutStart, signInOpen, openSi
     const { pathname } = history.location;
 
     return (
-        <Container className={`${classes.dropdown} ${menuOpen ? null : classes.hidden}`}>
+        <Container className={classes.dropdown}>
             <Link to='/'>
-                <MenuItem className={`${classes.menuItem} ${pathname === '/' ? classes.selected : null}`} disableGutters >Create</MenuItem>
+                <IconMenuItem active={pathname === '/'} shift={toggleText} height="24px" svg={createIcon} alt="" label="Create"/>
             </Link>
             <Link to='/cookbook'>
-                <MenuItem className={`${classes.menuItem} ${pathname === '/cookbook' ? classes.selected : null}`} disableGutters>Cookbook</MenuItem>
+                <IconMenuItem active={pathname === '/cookbook'} shift={toggleText} height="24px" svg={cookbookIcon} alt="" label="Cookbook"/>
             </Link>
-            <MenuItem className={`${classes.menuItem} ${pathname === '/learn' ? classes.selected : null}`} disableGutters>Learn</MenuItem>
+            <Tooltip disableFocusListener title="Coming soon" arrow enterDelay={50} placement="right">
+                <IconMenuItem active={pathname === '/learn'} shift={toggleText} height="24px" svg={learnIcon} alt="" label="Learn"/>
+            </Tooltip>
             <Divider />
             {
                 !currentUser ?

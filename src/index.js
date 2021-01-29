@@ -7,19 +7,19 @@ import CssBassline from '@material-ui/core/CssBaseline';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack'
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor} >
-        <BrowserRouter>
+        <HashRouter basename='/'>
           <SnackbarProvider maxSnack={3}>
             <CssBassline />
             <App />
           </SnackbarProvider>
-        </BrowserRouter>
+        </HashRouter>
       </PersistGate>
     </Provider>
   </React.StrictMode>,

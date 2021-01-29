@@ -2,7 +2,8 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
     container: {
-      margin: '25px auto'
+      margin: '25px auto',
+      cursor: 'pointer'
     },
     logoBg: {
       height: '70px',

@@ -8,16 +8,16 @@ const SideBar = () => {
 
     const classes = useStyles();
 
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [toggleTextMenu, setToggleTextMenu] = useState(true)
 
     const toggleMenu = () => {
-        setMenuOpen(!menuOpen)
+        setToggleTextMenu(!toggleTextMenu)
     }
 
     return (
         <Container className={classes.menu}>
-            <BreadBoxIcon toggleMenu={toggleMenu} menuOpen={menuOpen}/>
-            <Menu menuOpen={menuOpen} />
+            <BreadBoxIcon toggleMenu={toggleMenu} rotate={toggleTextMenu}/>
+            <Menu toggleText={toggleTextMenu} />
         </Container>
     )
 };

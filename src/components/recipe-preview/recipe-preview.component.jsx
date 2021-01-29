@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCookbookRecipes } from '../../redux/cookbook/cookbook.selectors';
 
-import { Dialog,
+import {
+  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
@@ -14,9 +15,10 @@ import { Dialog,
   Typography,
   List,
   ListItem,
-  ListItemText
- } from '@material-ui/core';
- import EditIcon from '@material-ui/icons/Edit'
+  ListItemText,
+  Tooltip
+} from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit'
 
 import useStyles from './recipe-preview.styles';
 
@@ -38,7 +40,7 @@ const RecipePreview = ({ handleClose, open, recipes, index }) => {
       onClose={handleClose}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
-      PaperProps={{className: classes.paper}}
+      PaperProps={{ className: classes.paper }}
       scroll="body"
     >
       <CardMedia
@@ -56,23 +58,27 @@ const RecipePreview = ({ handleClose, open, recipes, index }) => {
           {
             ingredients.map((item, index) => (
               <ListItem className={classes.listItem} key={index}>
-                  <ListItemText
-                    primary={`${item.amount} ${item.unit.name.toLowerCase()} ${'-'} ${item.ingredient.name}`}
-                  />
-                </ListItem>
+                <ListItemText
+                  primary={`${item.amount} ${item.unit.name.toLowerCase()} ${'-'} ${item.ingredient.name}`}
+                />
+              </ListItem>
             ))
           }
         </List>
-          
+
       </DialogContent>
       <DialogActions>
-        <Button className={classes.editButton} onClick={handleClose} color="secondary">
-          <EditIcon />
-          <span>Edit</span>
-        </Button>
-        <Button onClick={handleClose} color="primary">
-          Open
-        </Button>
+        <Tooltip title="Coming soon">
+          <Button className={classes.editButton} onClick={handleClose} color="secondary">
+            <EditIcon />
+            <span>Edit</span>
+          </Button>
+        </Tooltip>
+        <Tooltip title="Coming soon">
+          <Button onClick={handleClose} color="primary">
+            Open
+          </Button>
+        </Tooltip>
       </DialogActions>
     </Dialog>
   );

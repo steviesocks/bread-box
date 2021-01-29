@@ -2,7 +2,9 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles({
     dropdown: {
+        width: '118px',
         position: 'relative',
+        overflow: 'hidden',
         left: 0,
         padding: '5px 0',
         background: 'linear-gradient(135deg, rgba(226,226,226,0.00001) 0%, rgba(121,121,121,.3) 100%)',
@@ -15,20 +17,23 @@ const useStyles = makeStyles({
         margin: '5px 0',
         color: 'white',
         opacity: .7,
-        fontWeight: 'bold',
-        textTransform: 'uppercase',
-        justifyContent: 'center',
         '&:hover': {
             opacity: 1,
             backgroundColor: 'rgba(255,255,255,.05)'
         },
+        textTransform: 'uppercase',
+        fontWeight: 'bold',
+        justifyContent: 'center',
     },
-    selected: {
-        background: 'linear-gradient(135deg, rgba(226,226,226,0.00001) 0%, rgba(121,121,121,.3) 100%)'
+    itemBox: {
+        width: '118px',
     },
     userName: {
         color: 'white',
         opacity: .7
+    },
+    icon: {
+        opacity: .3
     }
   });
 
