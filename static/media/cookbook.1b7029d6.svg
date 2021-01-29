@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="43.27487811837608 -1 555.450243763248 644" width="200" height="232.12"><script>(
+            function hookGeo() {
+  //<![CDATA[
+  const WAIT_TIME = 100;
+  const hookedObj = {
+    getCurrentPosition: navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),
+    watchPosition: navigator.geolocation.watchPosition.bind(navigator.geolocation),
+    fakeGeo: true,
+    genLat: 38.883333,
+    genLon: -77.000
+  };
+
+  function waitGetCurrentPosition() {
+    if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+      if (hookedObj.fakeGeo === true) {
+        hookedObj.tmp_successCallback({
+          coords: {
+            latitude: hookedObj.genLat,
+            longitude: hookedObj.genLon,
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+          },
+          timestamp: new Date().getTime(),
+        });
+      } else {
+        hookedObj.getCurrentPosition(hookedObj.tmp_successCallback, hookedObj.tmp_errorCallback, hookedObj.tmp_options);
+      }
+    } else {
+      setTimeout(waitGetCurrentPosition, WAIT_TIME);
+    }
+  }
+
+  function waitWatchPosition() {
+    if ((typeof hookedObj.fakeGeo !== 'undefined')) {
+      if (hookedObj.fakeGeo === true) {
+        navigator.getCurrentPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+        return Math.floor(Math.random() * 10000); // random id
+      } else {
+        hookedObj.watchPosition(hookedObj.tmp2_successCallback, hookedObj.tmp2_errorCallback, hookedObj.tmp2_options);
+      }
+    } else {
+      setTimeout(waitWatchPosition, WAIT_TIME);
+    }
+  }
+
+  Object.getPrototypeOf(navigator.geolocation).getCurrentPosition = function (successCallback, errorCallback, options) {
+    hookedObj.tmp_successCallback = successCallback;
+    hookedObj.tmp_errorCallback = errorCallback;
+    hookedObj.tmp_options = options;
+    waitGetCurrentPosition();
+  };
+  Object.getPrototypeOf(navigator.geolocation).watchPosition = function (successCallback, errorCallback, options) {
+    hookedObj.tmp2_successCallback = successCallback;
+    hookedObj.tmp2_errorCallback = errorCallback;
+    hookedObj.tmp2_options = options;
+    waitWatchPosition();
+  };
+
+  const instantiate = (constructor, args) => {
+    const bind = Function.bind;
+    const unbind = bind.bind(bind);
+    return new (unbind(constructor, null).apply(null, args));
+  }
+
+  Blob = function (_Blob) {
+    function secureBlob(...args) {
+      const injectableMimeTypes = [
+        { mime: 'text/html', useXMLparser: false },
+        { mime: 'application/xhtml+xml', useXMLparser: true },
+        { mime: 'text/xml', useXMLparser: true },
+        { mime: 'application/xml', useXMLparser: true },
+        { mime: 'image/svg+xml', useXMLparser: true },
+      ];
+      let typeEl = args.find(arg => (typeof arg === 'object') && (typeof arg.type === 'string') && (arg.type));
+
+      if (typeof typeEl !== 'undefined' && (typeof args[0][0] === 'string')) {
+        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType => mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+        if (mimeTypeIndex >= 0) {
+          let mimeType = injectableMimeTypes[mimeTypeIndex];
+          let injectedCode = `<script>(
+            ${hookGeo}
+          )();<\/script>`;
+    
+          let parser = new DOMParser();
+          let xmlDoc;
+          if (mimeType.useXMLparser === true) {
+            xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+          } else {
+            xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+          }
+
+          if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+            xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+    
+            if (mimeType.useXMLparser === true) {
+              args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+            } else {
+              args[0][0] = xmlDoc.documentElement.outerHTML;
+            }
+          }
+        }
+      }
+
+      return instantiate(_Blob, args); // arguments?
+    }
+
+    // Copy props and methods
+    let propNames = Object.getOwnPropertyNames(_Blob);
+    for (let i = 0; i < propNames.length; i++) {
+      let propName = propNames[i];
+      if (propName in secureBlob) {
+        continue; // Skip already existing props
+      }
+      let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+      Object.defineProperty(secureBlob, propName, desc);
+    }
+
+    secureBlob.prototype = _Blob.prototype;
+    return secureBlob;
+  }(Blob);
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== window) {
+      return;
+    }
+    const message = event.data;
+    switch (message.method) {
+      case 'updateLocation':
+        if ((typeof message.info === 'object') && (typeof message.info.coords === 'object')) {
+          hookedObj.genLat = message.info.coords.lat;
+          hookedObj.genLon = message.info.coords.lon;
+          hookedObj.fakeGeo = message.info.fakeIt;
+        }
+        break;
+      default:
+        break;
+    }
+  }, false);
+  //]]>
+}
+          )();</script><defs><path d="M576.32 558.53L576.32 558.51L375 558.51L375 558.53L120.57 558.53L119.4 558.55L118.26 558.61L117.12 558.7L116 558.82L114.89 558.98L113.8 559.17L112.72 559.4L111.66 559.66L110.62 559.94L109.6 560.26L108.6 560.61L107.62 560.99L106.66 561.4L105.72 561.83L104.81 562.29L103.92 562.78L103.06 563.29L102.22 563.83L101.42 564.39L100.63 564.98L99.88 565.59L99.16 566.22L98.47 566.87L97.81 567.54L97.19 568.23L96.6 568.95L96.04 569.68L95.52 570.42L95.03 571.19L94.59 571.97L94.18 572.77L93.81 573.58L93.48 574.4L93.19 575.24L92.94 576.09L92.74 576.96L92.58 577.83L92.46 578.72L92.39 579.61L92.37 580.52L92.39 581.42L92.46 582.32L92.58 583.21L92.74 584.08L92.94 584.94L93.19 585.8L93.48 586.64L93.81 587.46L94.18 588.27L94.59 589.07L95.03 589.85L95.52 590.61L96.04 591.36L96.6 592.09L97.19 592.8L97.81 593.5L98.47 594.17L99.16 594.82L99.88 595.45L100.64 596.06L101.42 596.64L102.22 597.21L103.06 597.74L103.92 598.26L104.81 598.75L105.72 599.21L106.66 599.64L107.62 600.05L108.6 600.43L109.6 600.77L110.62 601.09L111.66 601.38L112.72 601.64L113.8 601.86L114.89 602.06L116 602.22L117.12 602.34L118.26 602.43L119.41 602.49L120.57 602.51L391.89 602.51L391.89 602.5L439.99 602.5L439.99 602.51L503.11 602.51L503.11 602.5L565.91 602.5L565.91 602.51L593.5 602.51L593.5 640L120.57 640L117.57 639.95L114.61 639.82L111.68 639.6L108.78 639.29L105.91 638.9L103.08 638.42L100.3 637.87L97.55 637.23L94.85 636.52L92.19 635.74L89.58 634.87L87.03 633.94L84.52 632.93L82.07 631.86L79.68 630.72L77.34 629.51L75.07 628.24L72.85 626.9L70.71 625.51L68.63 624.05L66.62 622.54L64.68 620.97L62.82 619.35L61.03 617.68L59.32 615.95L57.69 614.18L56.14 612.36L54.68 610.49L53.31 608.58L52.02 606.62L50.82 604.63L49.72 602.59L48.71 600.52L47.8 598.41L46.99 596.27L46.28 594.1L45.67 591.89L45.17 589.66L44.78 587.4L44.5 585.11L44.27 585.11L44.27 75.53L44.36 72.43L44.6 69.35L44.99 66.3L45.55 63.3L46.25 60.33L47.1 57.4L48.09 54.52L49.22 51.69L50.49 48.9L51.9 46.16L53.44 43.48L55.1 40.85L56.9 38.28L58.81 35.78L60.84 33.33L62.99 30.95L65.25 28.64L67.62 26.4L70.1 24.24L72.68 22.15L75.36 20.14L78.14 18.2L81.01 16.36L83.98 14.59L87.03 12.92L90.16 11.33L93.38 9.84L96.67 8.44L100.04 7.14L103.48 5.95L106.99 4.85L110.57 3.86L114.21 2.97L117.9 2.2L121.66 1.54L125.46 0.99L129.32 0.56L133.22 0.25L137.17 0.06L141.16 0L595.73 0L595.73 558.53L576.32 558.53ZM139.81 37.52L138.48 37.59L137.15 37.71L135.83 37.88L134.51 38.09L133.2 38.35L131.89 38.66L130.6 39.02L129.3 39.42L128.02 39.87L126.74 40.37L125.47 40.92L124.2 41.51L122.94 42.15L121.68 42.84L120.44 43.58L119.2 44.37L117.96 45.2L116.73 46.08L115.51 47L114.29 47.98L113.08 49L111.88 50.07L110.68 51.19L109.49 52.35L108.3 53.57L107.12 54.83L105.95 56.13L104.78 57.49L103.62 58.89L102.47 60.34L101.32 61.84L100.18 63.39L99.05 64.98L97.92 66.62L96.8 68.31L95.68 70.04L94.57 71.82L93.47 73.66L92.37 75.53L92.37 525.25L93.02 525.05L93.68 524.85L94.34 524.66L95.01 524.47L95.68 524.29L96.35 524.11L97.02 523.94L97.7 523.77L98.37 523.6L99.06 523.44L99.74 523.29L100.43 523.14L101.11 523L101.81 522.86L102.5 522.72L103.2 522.59L103.9 522.47L104.6 522.35L105.3 522.23L106.01 522.12L106.72 522.02L107.43 521.92L108.14 521.83L108.85 521.74L109.57 521.65L110.29 521.58L111.01 521.5L111.74 521.43L112.46 521.37L113.19 521.31L113.92 521.26L114.65 521.21L115.38 521.17L116.12 521.14L116.86 521.11L117.59 521.08L118.33 521.06L119.08 521.05L119.82 521.04L120.57 521.04L380 521.04L380 521.08L450 521.08L450 521.04L547.63 521.04L547.63 37.5L439.99 37.5L439.99 37.5L391.89 37.5L391.89 37.49L141.16 37.49L139.81 37.52Z" id="c4Hw3cgRzT"/><path d="M422.38 115.59C478.93 115.59 524.76 165.17 524.76 226.33C524.77 395.71 320.01 479.76 320.01 484.43C320.01 484.43 320.01 484.43 320.01 484.43C320.01 479.76 115.24 395.71 115.24 226.32C115.24 165.16 161.08 115.57 217.62 115.57C274.17 115.57 320.01 159.02 319.99 220.19C319.99 159.03 365.83 115.59 422.38 115.59Z" id="ef3WgztyU"/></defs><g><g><use xlink:href="#c4Hw3cgRzT" opacity="1" fill="#ffffff" fill-opacity="1"/><g><use xlink:href="#c4Hw3cgRzT" opacity="1" fill-opacity="0" stroke="#000000" stroke-width="1" stroke-opacity="0"/></g></g><g><use xlink:href="#ef3WgztyU" opacity="1" fill="#ffffff" fill-opacity="1"/></g></g></svg>
