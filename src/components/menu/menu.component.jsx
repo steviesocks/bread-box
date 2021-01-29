@@ -32,13 +32,15 @@ const Menu = ({ toggleText, history, currentUser, signOutStart, openSignIn }) =>
     return (
         <Container className={classes.dropdown}>
             <Link to='/'>
-                <IconMenuItem active={pathname === '/'} shift={toggleText} height="24px" svg={createIcon} alt="" label="Create"/>
+                <IconMenuItem active={pathname === '/'} shift={toggleText} height="24px" svg={createIcon} alt="" label="Create" />
             </Link>
             <Link to='/cookbook'>
-                <IconMenuItem active={pathname === '/cookbook'} shift={toggleText} height="24px" svg={cookbookIcon} alt="" label="Cookbook"/>
+                <IconMenuItem active={pathname === '/cookbook'} shift={toggleText} height="24px" svg={cookbookIcon} alt="" label="Cookbook" />
             </Link>
             <Tooltip disableFocusListener title="Coming soon" arrow enterDelay={50} placement="right">
-                <IconMenuItem active={pathname === '/learn'} shift={toggleText} height="24px" svg={learnIcon} alt="" label="Learn"/>
+                <div>
+                    <IconMenuItem active={pathname === '/learn'} shift={toggleText} height="24px" svg={learnIcon} alt="" label="Learn" />
+                </div>
             </Tooltip>
             <Divider />
             {

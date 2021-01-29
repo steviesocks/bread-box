@@ -10,9 +10,6 @@ const useStyles = makeStyles({
         background: 'linear-gradient(135deg, rgba(226,226,226,0.00001) 0%, rgba(121,121,121,.3) 100%)',
         transition: 'all .5s'
     },
-    hidden: {
-        left: '-120%'
-    },
     menuItem: {
         margin: '5px 0',
         color: 'white',
@@ -34,6 +31,9 @@ const useStyles = makeStyles({
     },
     icon: {
         opacity: .3
+    },
+    tooltip: {
+        zIndex: 100
     }
   });
 

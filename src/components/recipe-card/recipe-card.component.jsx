@@ -48,7 +48,7 @@ const RecipeCard = ({ name, imageUrl, notes, dateCreated, index }) => {
     return (
         <div>
             <Card className={classes.root}>
-                <CardActionArea>
+                <CardActionArea onClick={handleModalOpen}>
                     <CardMedia
                     className={classes.media}
                     image={imageUrl !== "" ? imageUrl : breadIcon}

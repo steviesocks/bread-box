@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCookbookRecipes } from '../../redux/cookbook/cookbook.selectors';
 
+import { INSTRUCTIONS } from '../../utils/instructions';
+
 import {
   Dialog,
   DialogActions,
@@ -34,6 +36,7 @@ const RecipePreview = ({ handleClose, open, recipes, index }) => {
 
   return (
     <Dialog
+      className={classes.dialog}
       open={open}
       TransitionComponent={Transition}
       keepMounted
@@ -49,22 +52,43 @@ const RecipePreview = ({ handleClose, open, recipes, index }) => {
         title={name}
       />
       <DialogTitle id="alert-dialog-slide-title">{name}</DialogTitle>
-      <DialogContent>
+      <DialogContent className={classes.content}>
         <DialogContentText id="alert-dialog-slide-description">
           {notes}
         </DialogContentText>
-        <Typography variant="h6" >Ingredients</Typography>
-        <List dense>
-          {
-            ingredients.map((item, index) => (
-              <ListItem className={classes.listItem} key={index}>
-                <ListItemText
-                  primary={`${item.amount} ${item.unit.name.toLowerCase()} ${'-'} ${item.ingredient.name}`}
-                />
-              </ListItem>
-            ))
-          }
-        </List>
+        <div className={classes.grid}>
+          <div >
+            <Typography variant="h6" >Ingredients</Typography>
+            <List dense>
+              {
+                ingredients.map((item, index) => (
+                  <ListItem className={classes.listItem} key={index}>
+                    <ListItemText
+                      primary={`${item.amount} ${item.unit.name.toLowerCase()} ${'-'} ${item.ingredient.name}`}
+                    />
+                  </ListItem>
+                ))
+              }
+            </List>
+          </div>
+          <div>
+            <Typography variant="h6" >Instructions</Typography>
+            <Typography variant="caption">(placeholder)</Typography>
+            <List>
+              {
+                INSTRUCTIONS.map((step, index) => (
+                  <ListItem key={index}>
+                    <ListItemText>
+                      <Typography variant="h6" className={classes.steps}>{`${index + 1}. ${step.header}`}</Typography>
+                      <p className={classes.p}>{step.notes}</p>
+                    </ListItemText>
+                  </ListItem>
+                ))
+              }
+            </List>
+          </div>
+
+        </div>
 
       </DialogContent>
       <DialogActions>
