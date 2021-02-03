@@ -1,19 +1,16 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
-    dialog: {
-      position: 'relative'
-    },
     paper: {
       width: '600px',
       height: '90vh',
-      position: 'relative'
+      position: 'relative',
     },
     heroImage: {
       height: '337.5px',
     },
     content: {
-      position: 'sticky'
+
     },
     grid: {
       display: 'grid',
@@ -34,6 +31,15 @@ const useStyles = makeStyles({
     },
     p: {
       margin: 0
+    },
+    container: {
+      height: '80vh',
+      position: 'absolute',
+      overflowY: 'auto'
+    },
+    actions: {
+      marginTop: '81.5vh',
+      borderTop: '1px solid rgba(0,0,0,.3)'
     }
   });
 

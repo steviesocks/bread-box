@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCookbookRecipes } from '../../redux/cookbook/cookbook.selectors';
+
+import breadIcon from '../../assets/bread512.png'
 
 import { INSTRUCTIONS } from '../../utils/instructions';
 
@@ -23,6 +25,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit'
 
 import useStyles from './recipe-preview.styles';
+import Ingredients from './ingredients/ingredients.component';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -34,6 +37,12 @@ const RecipePreview = ({ handleClose, open, recipes, index }) => {
 
   const { name, notes, ingredients, imageUrl } = recipes[index];
 
+  const handleScroll = (event) => {
+    if (event.target.scrollTop > 337.5) {
+      console.log("now")
+    }
+  }
+
   return (
     <Dialog
       className={classes.dialog}
@@ -43,55 +52,44 @@ const RecipePreview = ({ handleClose, open, recipes, index }) => {
       onClose={handleClose}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
-      PaperProps={{ className: classes.paper }}
+      PaperProps={{ className: classes.paper, onScroll: handleScroll }}
       scroll="body"
     >
-      <CardMedia
-        className={classes.heroImage}
-        image={imageUrl}
-        title={name}
-      />
-      <DialogTitle id="alert-dialog-slide-title">{name}</DialogTitle>
-      <DialogContent className={classes.content}>
-        <DialogContentText id="alert-dialog-slide-description">
-          {notes}
-        </DialogContentText>
-        <div className={classes.grid}>
-          <div >
-            <Typography variant="h6" >Ingredients</Typography>
-            <List dense>
-              {
-                ingredients.map((item, index) => (
-                  <ListItem className={classes.listItem} key={index}>
-                    <ListItemText
-                      primary={`${item.amount} ${item.unit.name.toLowerCase()} ${'-'} ${item.ingredient.name}`}
-                    />
-                  </ListItem>
-                ))
-              }
-            </List>
-          </div>
-          <div>
-            <Typography variant="h6" >Instructions</Typography>
-            <Typography variant="caption">(placeholder)</Typography>
-            <List>
-              {
-                INSTRUCTIONS.map((step, index) => (
-                  <ListItem key={index}>
-                    <ListItemText>
-                      <Typography variant="h6" className={classes.steps}>{`${index + 1}. ${step.header}`}</Typography>
-                      <p className={classes.p}>{step.notes}</p>
-                    </ListItemText>
-                  </ListItem>
-                ))
-              }
-            </List>
+      <div className={classes.container}>
+        <CardMedia
+          className={classes.heroImage}
+          image={imageUrl.length ? imageUrl : breadIcon}
+          title={name}
+        />
+        <DialogTitle id="alert-dialog-slide-title">{name}</DialogTitle>
+        <DialogContent className={classes.content}>
+          <DialogContentText id="alert-dialog-slide-description">
+            {notes}
+          </DialogContentText>
+          <div className={classes.grid} >
+            <Ingredients ingredients={ingredients} classes={classes} />
+            <div>
+              <Typography variant="h6" >Instructions</Typography>
+              <Typography variant="caption">(placeholder)</Typography>
+              <List>
+                {
+                  INSTRUCTIONS.map((step, index) => (
+                    <ListItem key={index}>
+                      <ListItemText>
+                        <Typography variant="h6" className={classes.steps}>{`${index + 1}. ${step.header}`}</Typography>
+                        <p className={classes.p}>{step.notes}</p>
+                      </ListItemText>
+                    </ListItem>
+                  ))
+                }
+              </List>
+            </div>
+
           </div>
 
-        </div>
-
-      </DialogContent>
-      <DialogActions>
+        </DialogContent>
+      </div>
+      <DialogActions className={classes.actions}>
         <Tooltip title="Coming soon">
           <Button className={classes.editButton} onClick={handleClose} color="secondary">
             <EditIcon />
