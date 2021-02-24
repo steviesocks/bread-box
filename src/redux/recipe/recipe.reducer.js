@@ -1,13 +1,15 @@
 import { RecipeActionTypes } from './recipe.types';
 import { UserActionTypes } from '../user/user.types';
-import { deleteIngredient } from '../../utils/recipe.utils';
+import { deleteIngredient, deleteStep } from '../../utils/recipe.utils';
+import { createKey } from '../../utils/utils';
 
 const INITIAL_STATE = {
-    ingredients: []
+    ingredients: [],
+    steps: []
 }
 
 const recipeReducer = (state = INITIAL_STATE, action) => {
-    const { ingredients } = state;
+    const { ingredients, steps } = state;
     switch (action.type) {
         case RecipeActionTypes.ADD_INGREDIENT:
             return {
@@ -30,6 +32,20 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 ingredients: []
             };
+        case RecipeActionTypes.ADD_STEP:
+            return {
+                ...state,
+                steps: [...steps, {
+                    id: createKey(),
+                    header: action.payload.header,
+                    notes: action.payload.notes
+                }]
+            };
+        case RecipeActionTypes.DELETE_STEP:
+            return {
+                ...state,
+                steps: deleteStep(action.payload, steps)
+            }
         default:
             return state;
     }

@@ -2,10 +2,9 @@ import React, { useRef, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectCookbookRecipes } from '../../redux/cookbook/cookbook.selectors';
+import { createKey } from '../../utils/utils'
 
 import breadIcon from '../../assets/bread512.png'
-
-import { INSTRUCTIONS } from '../../utils/instructions';
 
 import {
   Dialog,
@@ -35,7 +34,7 @@ const RecipePreview = ({ handleClose, open, recipes, index }) => {
 
   const classes = useStyles();
 
-  const { name, notes, ingredients, imageUrl } = recipes[index];
+  const { name, notes, ingredients, steps, imageUrl } = recipes[index];
 
   const handleScroll = (event) => {
     if (event.target.scrollTop > 337.5) {
@@ -67,14 +66,13 @@ const RecipePreview = ({ handleClose, open, recipes, index }) => {
             {notes}
           </DialogContentText>
           <div className={classes.grid} >
-            <Ingredients ingredients={ingredients} classes={classes} />
+            <Ingredients ingredients={ingredients} />
             <div>
               <Typography variant="h6" >Instructions</Typography>
-              <Typography variant="caption">(placeholder)</Typography>
               <List>
                 {
-                  INSTRUCTIONS.map((step, index) => (
-                    <ListItem key={index}>
+                  steps.map((step, index) => (
+                    <ListItem key={step.id}>
                       <ListItemText>
                         <Typography variant="h6" className={classes.steps}>{`${index + 1}. ${step.header}`}</Typography>
                         <p className={classes.p}>{step.notes}</p>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectIngredients } from '../../redux/recipe/recipe.selectors';
+import { selectIngredients, selectSteps } from '../../redux/recipe/recipe.selectors';
 import { addRecipe } from '../../redux/cookbook/cookbook.actions';
 import { enqueueSnackbar, closeSnackbar } from '../../redux/notifications/notifications.actions';
 
@@ -15,7 +15,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { Recipe } from '../../utils/recipe.utils';
 import { createKey } from '../../utils/utils';
 
-const SaveRecipe = ({ open, setOpen, ingredients, addRecipe }) => {
+const SaveRecipe = ({ open, setOpen, ingredients, steps, addRecipe }) => {
 
     const [recipeInfo, setRecipeInfo] = useState({name: "", link: "", notes: "", imageUrl: ""})
 
@@ -31,7 +31,8 @@ const SaveRecipe = ({ open, setOpen, ingredients, addRecipe }) => {
     const handleSave = (event) => {
         event.preventDefault();
         const { name, link, notes, imageUrl } = recipeInfo;
-        const newRecipe = new Recipe(name, link, imageUrl, notes, ingredients)
+        const newRecipe = new Recipe(name, link, imageUrl, notes, ingredients, steps)
+        console.log(newRecipe)
         addRecipe(newRecipe)
         setOpen(false);
     }
@@ -102,7 +103,8 @@ const SaveRecipe = ({ open, setOpen, ingredients, addRecipe }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-    ingredients: selectIngredients
+    ingredients: selectIngredients,
+    steps: selectSteps
 });
 
 const mapDispatchToProps = dispatch => ({

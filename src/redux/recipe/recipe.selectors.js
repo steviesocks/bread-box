@@ -6,3 +6,8 @@ export const selectIngredients = createSelector(
     [selectRecipe],
     (recipe) => recipe.ingredients
 );
+
+export const selectSteps = createSelector(
+    [selectRecipe],
+    (recipe) => recipe.steps
+);

@@ -17,10 +17,6 @@ const useStyles = makeStyles({
       gridTemplateColumns: '2fr 3fr',
       position: 'sticky'
     },
-    listItem: {
-      padding: '0 16px',
-      height: '20px'
-    },
     editButton: {
       display: 'flex',
       justifyContent: 'space-between',

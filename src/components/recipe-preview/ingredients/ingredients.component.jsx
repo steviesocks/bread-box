@@ -1,14 +1,15 @@
 import React from 'react';
 
-
 import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
 
-const Ingredients = ({ ingredients, classes }) => {
-      
+import useStyles from './ingredients.styles';
+
+const Ingredients = ({ ingredients }) => {
+    const classes = useStyles()
     return (
         <div>
             <Typography variant="h6" >Ingredients</Typography>
-            <List dense>
+            <List dense className={classes.ingredientsList}>
               {
                 ingredients.map((item, index) => (
                   <ListItem className={classes.listItem} key={index}>

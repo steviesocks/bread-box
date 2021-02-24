@@ -17,4 +17,14 @@ export const setIngredients = (ingredients) => ({
 
 export const clearIngredients = () => ({
     type: RecipeActionTypes.CLEAR_INGREDIENTS
-})
+});
+
+export const addStep = (stepObject) => ({
+    type: RecipeActionTypes.ADD_STEP,
+    payload: stepObject
+});
+
+export const deleteStep = (id) => ({
+    type: RecipeActionTypes.DELETE_STEP,
+    payload: id
+});
