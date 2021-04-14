@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Container } from '@material-ui/core';
-import Ingredient from '../../components/ingredient/ingredient.component';
+import CreateInputTabs from '../../components/create-input-tabs/create-input-tabs.component';
 import Recipe from '../../components/recipe/recipe.component';
 import UnitConversion from '../../components/unit-conversion/unit-conversion.component';
 
@@ -13,7 +13,7 @@ const CreatePage = () => {
 
     return (
         <Container className={classes.createPage}>
-            <Ingredient />
+            <CreateInputTabs />
             <Recipe />
             <UnitConversion />
         </Container>

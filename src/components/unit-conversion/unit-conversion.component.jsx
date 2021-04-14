@@ -27,7 +27,8 @@ import {
     MenuItem,
     Container,
     Tooltip,
-    Fab
+    Fab,
+    Typography
 } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import AddIcon from '@material-ui/icons/Add';
@@ -136,7 +137,7 @@ const UnitConversion = ({amountFrom, setAmountFrom, amountTo, setAmountTo, unitT
 
     return (
         <Paper className={classes.paper}>
-            <h2>Unit Conversion</h2>
+            <Typography variant="h6">Unit Conversion</Typography>
             <Container className={classes.calculator}>
                 <Container className={classes.inputs}>
                     <TextField 

@@ -7,7 +7,8 @@ const useStyles = makeStyles({
         fontSize: '1em'
     },
     p: {
-        margin: 0
+        margin: 0,
+        whiteSpace: 'pre-wrap'
     },
 })
 
