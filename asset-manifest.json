@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "./static/css/main.fe2f0fcd.chunk.css",
-    "main.js": "./static/js/main.00d6873c.chunk.js",
-    "main.js.map": "./static/js/main.00d6873c.chunk.js.map",
-    "runtime-main.js": "./static/js/runtime-main.eb146a24.js",
-    "runtime-main.js.map": "./static/js/runtime-main.eb146a24.js.map",
-    "static/js/2.a76b9302.chunk.js": "./static/js/2.a76b9302.chunk.js",
-    "static/js/2.a76b9302.chunk.js.map": "./static/js/2.a76b9302.chunk.js.map",
-    "static/js/3.72c87c4d.chunk.js": "./static/js/3.72c87c4d.chunk.js",
-    "static/js/3.72c87c4d.chunk.js.map": "./static/js/3.72c87c4d.chunk.js.map",
-    "index.html": "./index.html",
-    "static/css/main.fe2f0fcd.chunk.css.map": "./static/css/main.fe2f0fcd.chunk.css.map",
-    "static/js/2.a76b9302.chunk.js.LICENSE.txt": "./static/js/2.a76b9302.chunk.js.LICENSE.txt",
-    "static/media/chef-hat.99293751.svg": "./static/media/chef-hat.99293751.svg",
-    "static/media/cookbook.1b7029d6.svg": "./static/media/cookbook.1b7029d6.svg",
-    "static/media/idea.153b91e9.svg": "./static/media/idea.153b91e9.svg"
+    "main.css": "/bread-box/static/css/main.fe2f0fcd.chunk.css",
+    "main.js": "/bread-box/static/js/main.00d6873c.chunk.js",
+    "main.js.map": "/bread-box/static/js/main.00d6873c.chunk.js.map",
+    "runtime-main.js": "/bread-box/static/js/runtime-main.18e0a797.js",
+    "runtime-main.js.map": "/bread-box/static/js/runtime-main.18e0a797.js.map",
+    "static/js/2.c5cf6790.chunk.js": "/bread-box/static/js/2.c5cf6790.chunk.js",
+    "static/js/2.c5cf6790.chunk.js.map": "/bread-box/static/js/2.c5cf6790.chunk.js.map",
+    "static/js/3.72c87c4d.chunk.js": "/bread-box/static/js/3.72c87c4d.chunk.js",
+    "static/js/3.72c87c4d.chunk.js.map": "/bread-box/static/js/3.72c87c4d.chunk.js.map",
+    "index.html": "/bread-box/index.html",
+    "static/css/main.fe2f0fcd.chunk.css.map": "/bread-box/static/css/main.fe2f0fcd.chunk.css.map",
+    "static/js/2.c5cf6790.chunk.js.LICENSE.txt": "/bread-box/static/js/2.c5cf6790.chunk.js.LICENSE.txt",
+    "static/media/chef-hat.99293751.svg": "/bread-box/static/media/chef-hat.99293751.svg",
+    "static/media/cookbook.1b7029d6.svg": "/bread-box/static/media/cookbook.1b7029d6.svg",
+    "static/media/idea.153b91e9.svg": "/bread-box/static/media/idea.153b91e9.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.eb146a24.js",
-    "static/js/2.a76b9302.chunk.js",
+    "static/js/runtime-main.18e0a797.js",
+    "static/js/2.c5cf6790.chunk.js",
     "static/css/main.fe2f0fcd.chunk.css",
     "static/js/main.00d6873c.chunk.js"
   ]
