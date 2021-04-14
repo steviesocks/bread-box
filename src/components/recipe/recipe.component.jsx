@@ -11,8 +11,7 @@ import {
     Paper,
     List,
     Button,
-    TextField,
-    Typography
+    Typography,
 } from '@material-ui/core';
 
 import RecipeItem from '../recipe-item/recipe-item.component';
@@ -25,11 +24,6 @@ const Recipe = ({ ingredients, steps, deleteIngredient, setIngredients, clearIng
     const classes = useStyles();
 
     const [openSaveRecipe, setOpenSaveRecipe] = useState(false);
-    const [newStep, setNewStep] = useState({
-        header: '',
-        notes: '',
-        key: Date.now()
-    });
 
     const handleSave = () => {
         setOpenSaveRecipe(true)
@@ -37,23 +31,6 @@ const Recipe = ({ ingredients, steps, deleteIngredient, setIngredients, clearIng
 
     const handleClear = () => {
         clearIngredients()
-    }
-
-    const handleTextInput = (event) => {
-        const { name, value } = event.target
-        setNewStep(prevState => ({
-            ...prevState,
-            [name]: value
-        }))
-    }
-
-    const handleAddStep = () => {
-        addStep(newStep)
-        setNewStep({
-            header: '',
-            notes: '',
-            key: Date.now()
-        })
     }
 
     const moveCardHandler = (dragIndex, hoverIndex) => {
@@ -74,7 +51,7 @@ const Recipe = ({ ingredients, steps, deleteIngredient, setIngredients, clearIng
 
     return (
         <Paper className={classes.paper}>
-            <h2>Recipe</h2>
+            <Typography variant="h6">Recipe</Typography>
             <Button
                 variant="text"
                 color="primary"
@@ -118,30 +95,6 @@ const Recipe = ({ ingredients, steps, deleteIngredient, setIngredients, clearIng
                 </List>
             </DndProvider>
             <h4>Steps</h4>
-            <TextField
-                key={`${newStep.key}-header`}
-                name='header'
-                label="Header"
-                fullWidth
-                value={newStep.heading}
-                onChange={handleTextInput} />
-            <TextField
-                key={`${newStep.key}-notes`}
-                name='notes'
-                label="Notes"
-                variant="outlined"
-                fullWidth
-                value={newStep.instructions}
-                onChange={handleTextInput} />
-            <Button
-                variant="text"
-                color="primary"
-                className={classes.addButton}
-                disabled={newStep.header.length ? false : true}
-                onClick={handleAddStep}
-            >
-                Add
-            </Button>
             <List>
                 {
                     steps.map((step, index) => (
@@ -163,7 +116,6 @@ const mapDispatchToProps = dispatch => ({
     deleteIngredient: (key) => dispatch(deleteIngredient(key)),
     setIngredients: (ingredients) => dispatch(setIngredients(ingredients)),
     clearIngredients: () => dispatch(clearIngredients()),
-    addStep: (stepObject) => dispatch(addStep(stepObject)),
     deleteStep: (id) => dispatch(deleteStep(id))
 });
 

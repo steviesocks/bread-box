@@ -1,34 +1,36 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 
-import { addIngredient } from '../../redux/recipe/recipe.actions';
-import { createKey } from '../../utils/utils';
+import { addIngredient } from '../../../redux/recipe/recipe.actions';
+import { createKey } from '../../../utils/utils';
 
 import {
-    Paper,
     TextField,
     FormControl,
     Select,
     MenuItem,
     Container,
     Tooltip,
-    Fab } from '@material-ui/core';
+    Typography,
+    Fab,
+    Button
+} from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import AddIcon from '@material-ui/icons/Add';
 
-import { UNITS_ARRAY, INGREDIENTS_ARRAY } from '../../conversion/conversions';
-import { getUnit } from '../../utils/calculator.utils';
+import { UNITS_ARRAY, INGREDIENTS_ARRAY } from '../../../conversion/conversions';
+import { getUnit } from '../../../utils/calculator.utils';
 
 import useStyles from './ingredient.styles';
 
-const Ingredient = ({addIngredient}) => {
+const Ingredient = ({ addIngredient }) => {
 
     const autocompleteRef = useRef();
 
     const classes = useStyles();
 
     const [amount, setAmount] = useState(1);
-    const [unit, setUnit] = useState({name: "Cup", toBase: 1, type: "volume"});
+    const [unit, setUnit] = useState({ name: "Cup", toBase: 1, type: "volume" });
     const [ingredient, setIngredient] = useState(null);
 
     const handleAutoCompleteChange = (event, value, reason, name) => {
@@ -57,38 +59,50 @@ const Ingredient = ({addIngredient}) => {
     }
 
     const addIngredientToRecipe = () => {
-        const newIngredient = {key: createKey(), ingredient, amount, unit};
+        const newIngredient = { key: createKey(), ingredient, amount, unit };
         addIngredient(newIngredient);
     }
 
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        addIngredientToRecipe()
+    }
+
     return (
-        <Paper className={classes.paper}>
-            <h2>Pick Ingredients</h2>
-            <TextField 
+        <form className={classes.ingredientsTab} onSubmit={handleSubmit}>
+            <Typography variant="h6" className={classes.h6}>Pick Ingredients</Typography>
+            <TextField
                 className={classes.amount}
+                classes={{root: classes.amountRoot}}
                 name="amount-input"
-                variant="outlined" 
-                value={amount.toString()} 
+                variant="outlined"
+                value={amount.toString()}
                 type="number"
                 inputProps={{
-                                className: classes.amountInput,
-                                step: "0.25",
-                                min: "0"
-                            }} 
+                    className: classes.amountInput,
+                    step: "0.25",
+                    min: "0"
+                }}
                 onChange={handleInputChange}
             />
-            <FormControl variant="outlined" className={classes.unit}>
+            <FormControl 
+                variant="outlined" 
+                className={classes.unit} 
+                classes={{root: classes.unitRoot}}
+            >
                 <Select
-                id="unit-from"
-                value={unit.name}
-                onChange={handleInputChange}
-                name="unit-select"
+                    id="unit-select"
+                    value={unit.name}
+                    onChange={handleInputChange}
+                    name="unit-select"
+                    className={classes.unitSelect}
+                    inputProps={{className: classes.unitInput}}
                 >
-                {
-                    UNITS_ARRAY.map(unit => (<MenuItem key={unit.name} value={unit.name}>{unit.name}</MenuItem>
-                    ))
-                }
-                
+                    {
+                        UNITS_ARRAY.map(unit => (<MenuItem key={unit.name} value={unit.name}>{unit.name}</MenuItem>
+                        ))
+                    }
+
                 </Select>
             </FormControl>
             <Autocomplete
@@ -99,20 +113,29 @@ const Ingredient = ({addIngredient}) => {
                 options={INGREDIENTS_ARRAY}
                 getOptionLabel={(option) => option.name}
                 // style={{ width: 300 }}
-                renderInput={(params) => <TextField {...params} label="Ingredient" variant="outlined" error={ingredient === null ? true : false}/>}
+                renderInput={(params) => <TextField {...params} label="Ingredient" variant="outlined" error={ingredient === null ? true : false} />}
                 onChange={(event, value, reason) => {
                     const name = autocompleteRef.current.getAttribute("name");
                     handleAutoCompleteChange(event, value, reason, name)
                 }}
             />
-            <Container className={classes.addButton}>
+            <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.addButton}
+                // disabled={newStep.header.length ? false : true}
+            >
+                Add Ingredient
+            </Button>
+            {/* <Container className={classes.addButton}>
                 <Tooltip title="Add to recipe" aria-label="add to recipe">
                     <Fab color="primary" className={classes.fab}>
-                        <AddIcon onClick={() => addIngredientToRecipe()}/>
+                        <AddIcon onClick={() => addIngredientToRecipe()} />
                     </Fab>
-                </Tooltip> 
-            </Container> 
-        </Paper>
+                </Tooltip>
+            </Container> */}
+        </form>
     )
 
 }
