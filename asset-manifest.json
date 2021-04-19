@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/bread-box/static/css/main.fe2f0fcd.chunk.css",
-    "main.js": "/bread-box/static/js/main.1b1c2442.chunk.js",
-    "main.js.map": "/bread-box/static/js/main.1b1c2442.chunk.js.map",
+    "main.js": "/bread-box/static/js/main.73253987.chunk.js",
+    "main.js.map": "/bread-box/static/js/main.73253987.chunk.js.map",
     "runtime-main.js": "/bread-box/static/js/runtime-main.18e0a797.js",
     "runtime-main.js.map": "/bread-box/static/js/runtime-main.18e0a797.js.map",
     "static/js/2.05e515b9.chunk.js": "/bread-box/static/js/2.05e515b9.chunk.js",
@@ -20,6 +20,6 @@
     "static/js/runtime-main.18e0a797.js",
     "static/js/2.05e515b9.chunk.js",
     "static/css/main.fe2f0fcd.chunk.css",
-    "static/js/main.1b1c2442.chunk.js"
+    "static/js/main.73253987.chunk.js"
   ]
 }
